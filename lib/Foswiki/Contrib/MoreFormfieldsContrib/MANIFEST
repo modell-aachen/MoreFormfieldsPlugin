@@ -1,0 +1,16 @@
+data/System/MoreFormfieldsContrib.txt 0644
+lib/Foswiki/Contrib/MoreFormfieldsContrib.pm 0644
+lib/Foswiki/Form/Ipaddress.pm 0644
+lib/Foswiki/Form/Macaddress.pm 0644
+lib/Foswiki/Form/Netmask.pm 0644
+lib/Foswiki/Form/NetworkAddressField.pm 0644
+pub/System/MoreFormfieldsContrib/Makefile 0644
+pub/System/MoreFormfieldsContrib/moreformfields.css 0644
+pub/System/MoreFormfieldsContrib/moreformfields.css.gz 0644
+pub/System/MoreFormfieldsContrib/moreformfields.uncompressed.css 0644
+pub/System/MoreFormfieldsContrib/networkaddress.js 0644
+pub/System/MoreFormfieldsContrib/networkaddress.js.gz 0644
+pub/System/MoreFormfieldsContrib/networkaddress.uncompressed.js 0644
+pub/System/MoreFormfieldsContrib/validate.js 0644
+pub/System/MoreFormfieldsContrib/validate.js.gz 0644
+pub/System/MoreFormfieldsContrib/validate.uncompressed.js 0644
