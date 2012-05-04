@@ -14,8 +14,8 @@
 # http://www.gnu.org/copyleft/gpl.html
 
 package Foswiki::Contrib::MoreFormfieldsContrib;
-our $VERSION = '$Rev$';
-our $RELEASE = '0.01';
+our $VERSION          = '$Rev$';
+our $RELEASE          = '0.01';
 our $SHORTDESCRIPTION = 'Additionall formfield types for %SYSTEMWEB%.DataForms';
 
 1;
