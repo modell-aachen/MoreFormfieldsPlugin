@@ -18,92 +18,84 @@ package Foswiki::Form::NetworkAddressField;
 use strict;
 use warnings;
 
-use Foswiki::Form::Text            ();
+use Foswiki::Form::Text ();
 use Foswiki::Plugins::JQueryPlugin ();
 our @ISA = ('Foswiki::Form::Text');
 
 sub addJavascript {
+  #my $this = shift;
+  Foswiki::Func::addToZone("script", 
+    "MOREFORMFIELDSCONTRIB::IPADDRESS::JS",
+    "<script src='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsContrib/networkaddress.js'></script>", 
+    "JQUERYPLUGIN::FOSWIKI, JQUERYPLUGIN::LIVEQUERY, JQUERYPLUGIN::VALIDATE");
 
-    #my $this = shift;
-    Foswiki::Func::addToZone(
-        "script",
-        "MOREFORMFIELDSCONTRIB::IPADDRESS::JS",
-"<script src='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsContrib/networkaddress.js'></script>",
-        "JQUERYPLUGIN::FOSWIKI, JQUERYPLUGIN::LIVEQUERY, JQUERYPLUGIN::VALIDATE"
-    );
-
-    if ( $Foswiki::cfg{Plugins}{MoreFormfieldsContrib}{Debug} ) {
-        Foswiki::Plugins::JQueryPlugin::createPlugin("debug");
-    }
+  if ($Foswiki::cfg{Plugins}{MoreFormfieldsContrib}{Debug}) {
+    Foswiki::Plugins::JQueryPlugin::createPlugin("debug");
+  }
 
 }
 
 sub addStyles {
-
-    #my $this = shift;
-    Foswiki::Func::addToZone( "head", "MOREFORMFIELDSCONTRIB::IPADDRESS::CSS",
-"<link rel='stylesheet' media='all' href='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsContrib/moreformfields.css' />"
-    );
+  #my $this = shift;
+  Foswiki::Func::addToZone("head", 
+    "MOREFORMFIELDSCONTRIB::IPADDRESS::CSS",
+    "<link rel='stylesheet' media='all' href='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsContrib/moreformfields.css' />");
 
 }
 
 sub renderForEdit {
-    my $this = shift;
+  my $this = shift;
 
-    # get args in a backwards compatible manor:
-    my $metaOrWeb = shift;
+  # get args in a backwards compatible manor:
+  my $metaOrWeb = shift;
 
-    my $meta;
-    my $web;
-    my $topic;
+  my $meta;
+  my $web;
+  my $topic;
 
-    if ( ref($metaOrWeb) ) {
+  if (ref($metaOrWeb)) {
+    # new: $this, $meta, $value
+    $meta = $metaOrWeb;
+    $web = $meta->web;
+    $topic = $meta->topic;
+  } else {
+    # old: $this, $web, $topic, $value
+    $web = $metaOrWeb;
+    $topic = shift;
+    ($meta, undef) = Foswiki::Func::readTopic($web, $topic);
+  }
 
-        # new: $this, $meta, $value
-        $meta  = $metaOrWeb;
-        $web   = $meta->web;
-        $topic = $meta->topic;
-    }
-    else {
+  my $value = shift;
 
-        # old: $this, $web, $topic, $value
-        $web   = $metaOrWeb;
-        $topic = shift;
-        ( $meta, undef ) = Foswiki::Func::readTopic( $web, $topic );
-    }
+  $this->addJavascript();
+  $this->addStyles();
 
-    my $value = shift;
+  my $required = '';
+  if ($this->{attributes} =~ /\bM\b/i) {
+    $required = 'required';
+  }
 
-    $this->addJavascript();
-    $this->addStyles();
-
-    my $required = '';
-    if ( $this->{attributes} =~ /\bM\b/i ) {
-        $required = 'required';
-    }
-
-    return (
-        '',
-        CGI::textfield(
-            -class => $this->cssClasses(
-                'foswikiInputField', $this->{_class}, $required
-            ),
-            -name  => $this->{name},
-            -size  => $this->{size},
-            -value => $value
-        )
-    );
+  return (
+    '',
+    CGI::textfield(
+      -class => $this->cssClasses('foswikiInputField', $this->{_class}, $required),
+      -name => $this->{name},
+      -size => $this->{size},
+      -value => $value
+    )
+  );
 }
 
 sub renderForDisplay {
-    my ( $this, $format, $value, $attrs ) = @_;
+  my ($this, $format, $value, $attrs) = @_;
 
-    my $result = "<div class='" . $this->{_class} . "'>$value</div>";
-    $format =~ s/\$value/$result/g;
+  my $result = "<div class='" . $this->{_class} . "'>$value</div>";
+  $format =~ s/\$value/$result/g;
 
-    $this->addStyles();
+  $this->addStyles();
 
-    return $this->SUPER::renderForDisplay( $format, $value, $attrs );
+  return $this->SUPER::renderForDisplay($format, $value, $attrs);
 }
+
 
 1;

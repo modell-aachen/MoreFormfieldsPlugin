@@ -22,10 +22,10 @@ use Foswiki::Form::NetworkAddressField ();
 our @ISA = ('Foswiki::Form::NetworkAddressField');
 
 sub new {
-    my $class = shift;
-    my $this  = $class->SUPER::new(@_);
-    $this->{_class} = 'foswikiIpAddress';
-    return $this;
+  my $class = shift;
+  my $this = $class->SUPER::new(@_);
+  $this->{_class} = 'foswikiIpAddress';
+  return $this;
 }
 
 1;
