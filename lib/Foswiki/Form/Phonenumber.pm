@@ -13,27 +13,13 @@
 # GNU General Public License for more details, published at
 # http://www.gnu.org/copyleft/gpl.html
 
-package Foswiki::Form::NetworkAddressField;
+package Foswiki::Form::Phonenumber;
 
 use strict;
 use warnings;
 
 use Foswiki::Form::Text ();
-use Foswiki::Plugins::JQueryPlugin ();
 our @ISA = ('Foswiki::Form::Text');
-
-sub addJavascript {
-  #my $this = shift;
-  Foswiki::Func::addToZone("script", 
-    "MOREFORMFIELDSCONTRIB::IPADDRESS::JS",
-    "<script src='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsContrib/networkaddress.js'></script>", 
-    "JQUERYPLUGIN::FOSWIKI, JQUERYPLUGIN::LIVEQUERY, JQUERYPLUGIN::VALIDATE");
-
-  if ($Foswiki::cfg{Plugins}{MoreFormfieldsContrib}{Debug}) {
-    Foswiki::Plugins::JQueryPlugin::createPlugin("debug");
-  }
-
-}
 
 sub addStyles {
   #my $this = shift;
@@ -43,42 +29,29 @@ sub addStyles {
 
 }
 
-sub renderForEdit {
-  my $this = shift;
+sub addJavascript {
+  #my $this = shift;
+  Foswiki::Func::addToZone("script", 
+    "MOREFORMFIELDSCONTRIB::PHONENUMBER::JS",
+    "<script src='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsContrib/phonenumber.js'></script>", 
+    "JQUERYPLUGIN::FOSWIKI, JQUERYPLUGIN::LIVEQUERY, JQUERYPLUGIN::VALIDATE");
 
-  # get args in a backwards compatible manor:
-  my $metaOrWeb = shift;
-
-  my $meta;
-  my $web;
-  my $topic;
-
-  if (ref($metaOrWeb)) {
-    # new: $this, $meta, $value
-    $meta = $metaOrWeb;
-    $web = $meta->web;
-    $topic = $meta->topic;
-  } else {
-    # old: $this, $web, $topic, $value
-    $web = $metaOrWeb;
-    $topic = shift;
-    ($meta, undef) = Foswiki::Func::readTopic($web, $topic);
+  if ($Foswiki::cfg{Plugins}{MoreFormfieldsContrib}{Debug}) {
+    Foswiki::Plugins::JQueryPlugin::createPlugin("debug");
   }
 
-  my $value = shift;
+}
+
+sub renderForEdit {
+  my ($this, $topicObject, $value) = @_;
 
   $this->addJavascript();
   $this->addStyles();
 
-  my $required = '';
-  if ($this->{attributes} =~ /\bM\b/i) {
-    $required = 'required';
-  }
-
   return (
     '',
     CGI::textfield(
-      -class => $this->cssClasses('foswikiInputField', $this->{_class}, $required),
+      -class => $this->cssClasses('foswikiInputField foswikiPhoneNumber'),
       -name => $this->{name},
       -size => $this->{size},
       -value => $value
@@ -89,13 +62,22 @@ sub renderForEdit {
 sub renderForDisplay {
   my ($this, $format, $value, $attrs) = @_;
 
-  my $result = "<div class='" . $this->{_class} . "'>$value</div>";
+  return '' unless defined $value && $value ne '';
+
+  my $number = $value;
+  $number =~ s/^\s+//;
+  $number =~ s/\s+$//;
+  $number =~ s/\s+//g;
+  $number =~ s/\(.*?\)//g;
+  $number =~ s/^\+/00/;
+
+  my $result = "<a href='sip:$number' class='foswikiPhoneNumber'>$value</a>";
   $format =~ s/\$value/$result/g;
 
   $this->addStyles();
+  $this->addJavascript();
 
   return $this->SUPER::renderForDisplay($format, $value, $attrs);
 }
-
 
 1;
