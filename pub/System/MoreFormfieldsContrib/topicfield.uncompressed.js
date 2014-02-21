@@ -7,7 +7,6 @@ jQuery(function($) {
   };
 
   function formatTopicItem(item) {
-console.log("item=",item);
     if (item.thumbnail) {
       return "<div class='image-item' style='background-image:url("+item.thumbnail + ")'>"+
          item.text + 

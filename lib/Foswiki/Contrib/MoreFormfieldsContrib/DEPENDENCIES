@@ -1,1 +1,2 @@
 Foswiki::Plugins::JQueryPlugin,>3.31,perl,Required
+Foswiki::Contrib::JQSelect2Contrib,>0,perl,Required

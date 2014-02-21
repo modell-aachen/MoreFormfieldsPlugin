@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# MoreFormfieldsContrib is Copyright (C) 2010-2013 Michael Daum http://michaeldaumconsulting.com
+# MoreFormfieldsContrib is Copyright (C) 2010-2014 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -70,9 +70,12 @@ sub renderForDisplay {
 sub renderValueForDisplay {
   my ($this, $val) = @_;
 
+  return "" if !defined($val) || $val eq '';
+
   my $web = $this->param("web") || $this->{session}{webName};
   my $topicTitle = $this->getTopicTitle($web, $val);
   my $url = Foswiki::Func::getScriptUrl($web, $val, 'view');
+
   return "<a href='$url'>$topicTitle</a>";
 }
 
