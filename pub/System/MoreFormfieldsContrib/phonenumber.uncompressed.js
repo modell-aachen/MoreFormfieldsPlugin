@@ -8,9 +8,12 @@
   }, 'Please enter a valid phone number (Intl format accepted + ext: or x:)');
 
   $("input.foswikiPhoneNumber").livequery(function() {
-    $(this).rules("add", {
-      phone: true
-    });
+    var form = this.form;
+    if ($.data(form, "validator")) {
+      $(this).rules("add", {
+        phone: true
+      });
+    }
   });
   
 })(jQuery);
