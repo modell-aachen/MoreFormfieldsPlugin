@@ -89,12 +89,19 @@ sub renderForEdit {
 sub renderForDisplay {
   my ($this, $format, $value, $attrs) = @_;
 
-  my $result = "<div class='" . $this->{_class} . "'>$value</div>";
-  $format =~ s/\$value/$result/g;
+  my $displayValue = $this->getDisplayValue($value);
+  $format =~ s/\$value\(display\)/$displayValue/g;
+  $format =~ s/\$value/$value/g;
+
+  return $this->SUPER::renderForDisplay($format, $value, $attrs);
+}
+
+sub getDisplayValue {
+  my ($this, $value) = @_;
 
   $this->addStyles();
 
-  return $this->SUPER::renderForDisplay($format, $value, $attrs);
+  return "<div class='" . $this->{_class} . "'>$value</div>";
 }
 
 

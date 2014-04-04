@@ -27,6 +27,7 @@ sub new {
     my $this  = $class->SUPER::new(@_);
 
     $this->{_formfieldClass} = 'foswikiTopicField';
+    $this->{_web} = $this->param("web") || $this->{session}{webName};
 
     return $this;
 }
@@ -45,38 +46,44 @@ sub finish {
 sub renderForDisplay {
   my ($this, $format, $value, $attrs) = @_;
 
+
+  my $displayValue = $this->getDisplayValue($value);
+  $format =~ s/\$value\(display\)/$displayValue/g;
+  $format =~ s/\$value/$value/g;
+
+  return $this->SUPER::renderForDisplay($format, $value, $attrs);
+}
+
+sub getDisplayValue {
+  my ($this, $value) = @_;
+
   $this->getOptions($value);
 
   if ($this->isMultiValued) {
     my @result = ();
     foreach my $val (split(/\s*,\s*/, $value)) {
-      if (defined($this->{valueMap}{$val})) {
-        $val = $this->{valueMap}{$val};
+      my $origVal = $val;
+      if ($this->isValueMapped) {
+        if (defined($this->{valueMap}{$val})) {
+          $val = $this->{valueMap}{$val};
+        } 
+      } else {
+        $val = $this->getTopicTitle($this->{_web}, $val);
       }
-      push @result, $val;
+      push @result, "<a href='%SCRIPTURLPATH{view}%/$this->{_web}/$origVal'>$val</a>";
     }
     $value = join(", ", @result);
   } else {
+    my $origVal = $value;
     if ($this->isValueMapped) {
       if (defined($this->{valueMap}{$value})) {
         $value = $this->{valueMap}{$value};
       }
+    } else {
+      $value = $this->getTopicTitle($this->{_web}, $value);
     }
+    $value = "<a href='%SCRIPTURLPATH{view}%/$this->{_web}/$origVal'>$value</a>"
   }
-
-  return $this->SUPER::renderForDisplay($format, $value, $attrs);
-}
-
-sub renderValueForDisplay {
-  my ($this, $val) = @_;
-
-  return "" if !defined($val) || $val eq '';
-
-  my $web = $this->param("web") || $this->{session}{webName};
-  my $topicTitle = $this->getTopicTitle($web, $val);
-  my $url = Foswiki::Func::getScriptUrl($web, $val, 'view');
-
-  return "<a href='$url'>$topicTitle</a>";
 }
 
 sub param {

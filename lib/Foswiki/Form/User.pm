@@ -26,6 +26,7 @@ sub new {
     my $this  = $class->SUPER::new(@_);
 
     $this->{_formfieldClass} = 'foswikiUserField';
+    $this->{_web} = $this->param("web") || $Foswiki::cfg{UsersWebName};
 
     return $this;
 }
@@ -38,41 +39,6 @@ sub addJavascript {
 <script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsContrib/userfield.js'></script>
 HERE
 }
-
-sub renderForDisplay {
-  my ($this, $format, $value, $attrs) = @_;
-
-  $this->getOptions($value);
-
-  if ($this->isMultiValued) {
-    my @result = ();
-    foreach my $val (split(/\s*,\s*/, $value)) {
-      if (defined($this->{valueMap}{$val})) {
-        $val = $this->{valueMap}{$val};
-      }
-      push @result, $val;
-    }
-    $value = join(", ", @result);
-  } else {
-    if ($this->isValueMapped) {
-      if (defined($this->{valueMap}{$value})) {
-        $value = $this->{valueMap}{$value};
-      }
-    }
-  }
-
-  return $this->SUPER::renderForDisplay($format, $value, $attrs);
-}
-
-sub renderValueForDisplay {
-  my ($this, $val) = @_;
-
-  my $web = $this->param("web") || $Foswiki::cfg{UsersWebName};
-  my $topicTitle = $this->getTopicTitle($web, $val);
-  my $url = Foswiki::Func::getScriptUrl($web, $val, 'view');
-  return "<a href='$url'>$topicTitle</a>";
-}
-
 
 1;
 

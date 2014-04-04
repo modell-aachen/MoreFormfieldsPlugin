@@ -64,6 +64,19 @@ sub renderForDisplay {
 
   return '' unless defined $value && $value ne '';
 
+  my $displayValue = $this->getDisplayValue($value);
+  $format =~ s/\$value\(display\)/$displayValue/g;
+  $format =~ s/\$value/$value/g;
+
+  $this->addStyles();
+  $this->addJavascript();
+
+  return $this->SUPER::renderForDisplay($format, $value, $attrs);
+}
+
+sub getDisplayValue {
+  my ($this, $value) = @_;
+
   my $number = $value;
   $number =~ s/^\s+//;
   $number =~ s/\s+$//;
@@ -71,13 +84,7 @@ sub renderForDisplay {
   $number =~ s/\(.*?\)//g;
   $number =~ s/^\+/00/;
 
-  my $result = "<a href='sip:$number' class='foswikiPhoneNumber'>$value</a>";
-  $format =~ s/\$value/$result/g;
-
-  $this->addStyles();
-  $this->addJavascript();
-
-  return $this->SUPER::renderForDisplay($format, $value, $attrs);
+  return "<a href='sip:$number' class='foswikiPhoneNumber'>$value</a>";
 }
 
 1;
