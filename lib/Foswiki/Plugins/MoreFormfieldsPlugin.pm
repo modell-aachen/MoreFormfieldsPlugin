@@ -25,8 +25,8 @@ use Foswiki::Plugins ();
 
 use Error qw(:try);
 
-our $VERSION = '0.0.1';
-our $RELEASE = '0.0.1';
+our $VERSION = '0.01';
+our $RELEASE = '0.01';
 our $SHORTDESCRIPTION = 'Helper plugin for MoreFormfieldsContrib';
 our $NO_PREFS_IN_TOPIC = 1;
 
@@ -60,8 +60,6 @@ sub beforeSaveHandler {
       $field->beforeSaveHandler($meta, $form);
     }
   }
-
-  return;
 }
 
 1;

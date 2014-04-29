@@ -1,5 +1,5 @@
 # See bottom of file for license and copyright information
-package Foswiki::Form::Autofill;
+package Foswiki::Form::Id;
 
 use strict;
 use warnings;
@@ -19,7 +19,7 @@ sub new {
   my $class = shift;
   my $this = $class->SUPER::new(@_);
 
-  $this->{_formfieldClass} = 'foswikiAutoFillField';
+  $this->{_formfieldClass} = 'foswikiIDField';
 
   return $this;
 }
@@ -27,7 +27,6 @@ sub new {
 sub finish {
   my $this = shift;
   $this->SUPER::finish();
-  undef $this->{_params};
 }
 
 sub isEditable {
@@ -51,35 +50,16 @@ sub renderForEdit {
   );
 }
 
-sub param {
-  my ($this, $key) = @_;
-
-  unless (defined $this->{_params}) {
-    my %params = Foswiki::Func::extractParameters($this->{value});
-    $this->{_params} = \%params;
-  }
-
-  return (defined $key) ? $this->{_params}{$key} : $this->{_params};
-}
-
 sub beforeSaveHandler {
   my ($this, $topicObject) = @_;
 
-  #print STDERR "called Foswiki::Form::Autofill::beforeSaveHandler()\n";
+  #print STDERR "called Foswiki::Form::Id::beforeSaveHandler()\n";
 
-  my $source = $this->param("source");
-  my $sep = $this->param("separator") || '';
-  return unless $source;
+  my $topic = $topicObject->topic;
 
-  #print STDERR "source=$source\n";
-
-  my @result = ();
-  foreach my $name (split(/\s*,\s*/, $source)) {
-    my $field = $topicObject->get('FIELD', $name);
-    push @result, $field->{value} if defined $field && defined $field->{value} && $field->{value} ne '';
-  }
-
-  return unless @result;
+  return unless $topic =~ /(\d+)$/;
+  my $size = $this->{size} || 1;
+  my $value = sprintf("%0".$size."d", $1);
 
   my $thisField = $topicObject->get('FIELD', $this->{name});
   $thisField = {
@@ -91,7 +71,7 @@ sub beforeSaveHandler {
   my $request = Foswiki::Func::getRequestObject();
   $request->delete($this->{name});
 
-  $thisField->{value} = join($sep, @result);
+  $thisField->{value} = $value;
 
   $topicObject->putKeyed('FIELD', $thisField);
 
@@ -124,3 +104,4 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 As per the GPL, removal of this notice is prohibited.
+

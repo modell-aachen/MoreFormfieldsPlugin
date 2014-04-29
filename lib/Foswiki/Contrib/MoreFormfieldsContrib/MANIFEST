@@ -9,6 +9,8 @@ lib/Foswiki/Form/NetworkAddressField.pm 0644
 lib/Foswiki/Form/Phonenumber.pm 0644
 lib/Foswiki/Form/Topic.pm 0644
 lib/Foswiki/Form/User.pm 0644
+lib/Foswiki/Form/Id.pm 0644
+lib/Foswiki/Form/Select2.pm 0644
 lib/Foswiki/Plugins/MoreFormfieldsPlugin.pm 0644
 pub/System/MoreFormfieldsContrib/Makefile 0644
 pub/System/MoreFormfieldsContrib/moreformfields.css 0644
