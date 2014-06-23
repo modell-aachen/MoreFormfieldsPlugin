@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1356278776" format="1.1" version="1"}%
+%META:TOPICINFO{author="micha" comment="autosave" date="1403544053" format="1.1" version="3"}%
 ---+!! %TOPIC%
 %SHORTDESCRIPTION%
 
@@ -15,6 +15,8 @@ These are:
    * =topic=
    * =autofill=
    * =phonenumber=
+   * =time=
+   * =icon=
 
 ---++ !ExampleForm definition
 
@@ -22,7 +24,6 @@ These are:
 | <nop>IpAddress | ipaddress |  15  | | network address | M |
 | Netmask | netmask |  15  | | netmask |  |
 | <nop>MacAddress | macaddress |  17  | | hardware-addresse | |
-
 
 ---++ Installation Instructions
 

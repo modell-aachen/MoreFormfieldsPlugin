@@ -1,10 +1,10 @@
 jQuery(function($) {
-  var addressRegex = /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;
-  var macRegex = /^([a-f\d]+)[:\.-]([a-f\d]+)[:\.-]([a-f\d]+)[:\.-]([a-f\d]+)[:\.-]([a-f\d]+)[:\.-]([a-f\d]+)$/i;
-  var errorMsgIp = 'Please provide a valid IP address';
-  var errorMsgNetmask = 'Please provide a valid netmask';
-  var errorMsgMac = 'Please provide a valid mac address';
-  var $errorElem;
+  var addressRegex = /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/,
+    macRegex = /^([a-f\d]+)[:\.\-]([a-f\d]+)[:\.\-]([a-f\d]+)[:\.\-]([a-f\d]+)[:\.\-]([a-f\d]+)[:\.\-]([a-f\d]+)$/i,
+    errorMsgIp = 'Please provide a valid IP address',
+    errorMsgNetmask = 'Please provide a valid netmask',
+    errorMsgMac = 'Please provide a valid mac address',
+    $errorElem;
 
   function error(text, elem) {
     if ($errorElem) {
@@ -13,18 +13,27 @@ jQuery(function($) {
     $errorElem = $('<label class="error" generated="true">'+text+'</label>').insertAfter(elem);
   }
 
+  function addZeros(str, maxLen) {
+    var len = str.length;
+    if (len < 1) {str = '000';}
+    if (len == 1) {str = '00'+str;}
+    if (len == 2) {str = '0'+str;}
+    return str.substr(3-maxLen, maxLen);
+  }
+
   function testAddress(elem) {
-    var isRequired = elem.is(".required");
-    var isIpAddr = elem.is(".foswikiIpAddress");
-    var isNetmask = elem.is(".foswikiNetmask");
-    var isMacAddr = elem.is(".foswikiMacAddress");
-    var val = elem.val();
-    var result = []
-    var errorMsg = isNetmask?errorMsgNetmask:(isIpAddr?errorMsgIp:errorMsgMac);
-    var radix = isMacAddr?16:10;
-    var nrSegments = isMacAddr?6:4;
-    var match = isMacAddr?macRegex.exec(val):addressRegex.exec(val);
-    var separator = isMacAddr?':':'.';
+    var isRequired = elem.is(".required"),
+      isIpAddr = elem.is(".foswikiIpAddress"),
+      isNetmask = elem.is(".foswikiNetmask"),
+      isMacAddr = elem.is(".foswikiMacAddress"),
+      val = elem.val(),
+      result = [],
+      errorMsg = isNetmask?errorMsgNetmask:(isIpAddr?errorMsgIp:errorMsgMac),
+      radix = isMacAddr?16:10,
+      nrSegments = isMacAddr?6:4,
+      match = isMacAddr?macRegex.exec(val):addressRegex.exec(val),
+      separator = isMacAddr?':':'.',
+      max, min, i, segment;
 
     if (!isRequired && val == '') {
       $.log("empty value ... not required ... abording test");
@@ -37,15 +46,14 @@ jQuery(function($) {
       return false;
     }
 
-    var max;
-    var min = 0;
+    min = 0;
     if (isIpAddr) {
       max = 254;
     } else {
       max = 255;
     }
-    for (var i = 1; i <= nrSegments; i++) {
-      var segment = parseInt(match[i], radix);
+    for (i = 1; i <= nrSegments; i++) {
+      segment = parseInt(match[i], radix);
       if (isNaN(segment)) {
         $.log("can't parse segment"+match[i]);
         error(errorMsg, elem);
@@ -78,19 +86,10 @@ jQuery(function($) {
     return true;
   }
 
-  function addZeros(str, maxLen) {
-    var len = str.length;
-    if (len < 1) str = '000';
-    if (len == 1) str = '00'+str;
-    if (len == 2) str = '0'+str;
-    return str.substr(3-maxLen, maxLen);
-  }
-
   // dom ready
   $(function() {
     $(".foswikiIpAddress, .foswikiNetmask, .foswikiMacAddress").livequery(function() {
-      var $input = $(this);
-      var $form = $input.parents("form:first");
+      var $input = $(this), $form = $input.parents("form:first");
 
       // form validation
       $input.blur(function() {

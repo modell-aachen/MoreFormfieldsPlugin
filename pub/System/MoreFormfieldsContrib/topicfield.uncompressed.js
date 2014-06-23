@@ -1,7 +1,7 @@
 jQuery(function($) {
   var defaults = {
     minimumInputLength: 0,
-    url: foswiki.getPreference('SCRIPTURL')+'/view'+foswiki.getPreference('SYSTEMWEB')+'/MoreFormfieldsAjaxHelper?section=select2::topic&skin=text&contenttype=application/json%3Bcharset%3Dutf-8',
+    url: foswiki.getPreference('SCRIPTURL')+'/view/'+foswiki.getPreference('SYSTEMWEB')+'/MoreFormfieldsAjaxHelper?section=select2::topic&skin=text&contenttype=application/json%3Bcharset%3Dutf-8',
     width: 'element',
     quietMillis:500
   };
