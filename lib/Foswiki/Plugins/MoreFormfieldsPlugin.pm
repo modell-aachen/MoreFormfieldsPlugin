@@ -27,7 +27,7 @@ use Error qw(:try);
 
 our $VERSION = '0.01';
 our $RELEASE = '0.01';
-our $SHORTDESCRIPTION = 'Helper plugin for MoreFormfieldsContrib';
+our $SHORTDESCRIPTION = 'Additionall formfield types for %SYSTEMWEB%.DataForms';
 our $NO_PREFS_IN_TOPIC = 1;
 
 
