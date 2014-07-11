@@ -1,4 +1,4 @@
-package Foswiki::Plugins::MoreFormfieldsPlugins::Clockpicker;
+package Foswiki::Plugins::MoreFormfieldsPlugin::Clockpicker;
 
 use strict;
 use warnings;
