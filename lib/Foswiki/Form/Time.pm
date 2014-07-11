@@ -18,6 +18,7 @@ package Foswiki::Form::Time;
 use strict;
 use warnings;
 
+use Foswiki::Plugins::JQueryPlugin ();
 use Foswiki::Form::FieldDefinition ();
 our @ISA = ('Foswiki::Form::FieldDefinition');
 
@@ -43,24 +44,11 @@ sub new {
 sub renderForEdit {
   my ($this, $topicObject, $value) = @_;
 
-  Foswiki::Func::addToZone("script", "FOSWIKI::TIMEFIELD", <<'HERE', "JQUERYPLUGIN");
-<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsContrib/clockpicker.js'></script>
-<script type='text/javascript'>
-jQuery(function($) {
-  $(".foswikiTimeField").livequery(function() {
-    $(this).clockpicker();
-  });
-});
-</script>
-HERE
-
-  Foswiki::Func::addToZone("head", "FOSWIKI::TIMEFIELD", <<"HERE", "JQUERYPLUGIN");
-<link rel='stylesheet' type='text/css' href='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsContrib/clockpicker.css'></script>
-HERE
+  Foswiki::Plugins::JQueryPlugin::createPlugin("clockpicker");
 
   return (
     '',
-    "<input type='text' name='$this->{name}' size='$this->{size}' value='$value' data-autoclose='true' class='" . $this->cssClasses('foswikiInputField', 'foswikiTimeField') . "' />",
+    "<input type='text' name='$this->{name}' size='$this->{size}' value='$value' data-autoclose='true' class='" . $this->cssClasses('foswikiInputField', 'foswikiTimeField', 'jqClockPicker') . "' />",
   );
 }
 

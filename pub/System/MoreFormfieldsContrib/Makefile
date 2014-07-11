@@ -6,6 +6,7 @@ TARGET= \
   topicfield.js \
   phonenumber.js \
   clockpicker.js \
+  clockpicker.init.js \
   clockpicker.css \
   iconfield.js
 

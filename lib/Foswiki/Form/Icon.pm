@@ -69,10 +69,16 @@ HERE
   foreach my $group (sort keys %icons) {
     next if $this->{groupPattern} && $group !~ /$this->{groupPattern}/i;
 
-    $html .= "  <optgroup label='$group'>\n" if scalar$this->{hasMultipleGroups};
+    my $groupLabel = $group;
+    $groupLabel =~ s/^FamFamFam//;
+    $groupLabel =~ s/([a-z])([A-Z0-9])/$1 $2/g;
+
+    $html .= "  <optgroup label='$groupLabel'>\n" if scalar$this->{hasMultipleGroups};
 
     foreach my $entry (sort {$a->{id} cmp $b->{id}} @{$icons{$group}}) {
-      $html .= "    <option value='$entry->{id}'".($value && $entry->{id} eq $value?"selected":"").">$entry->{id}</option>\n";
+      my $text = $entry->{id};
+      $text =~ s/^fa\-//;
+      $html .= "    <option value='$entry->{id}'".($value && $entry->{id} eq $value?"selected":"")." ".($entry->{url}?"data-url='$entry->{url}'":"").">$text</option>\n";
     }
 
     $html .= "  </optgroup>\n" if $this->{hasMultipleGroups};
@@ -87,24 +93,63 @@ sub readIcons {
 
   return if %icons;
 
+  # read fontawesome icons
   my $iconFile = $Foswiki::cfg{PubDir}.'/'.$Foswiki::cfg{SystemWebName}.'/MoreFormfieldsContrib/icons.yml';
 
   my $yml = YAML::LoadFile($iconFile); 
 
-
+  my $numIcons = 0;
   foreach my $entry (@{$yml->{icons}}) {
+    $entry->{id} = 'fa-'.$entry->{id};
     foreach my $cat (@{$entry->{categories}}) {
       push @{$icons{$cat}}, $entry;
       if ($entry->{aliases}) {
         foreach my $alias (@{$entry->{aliases}}) {
           my %clone = %$entry;
-          $clone{id} = $alias;
+          $clone{id} = 'fa-'.$alias;
           $clone{_isAlias} = 1;
           push @{$icons{$cat}}, \%clone;
         }
       }
+      $numIcons += scalar(@{$icons{$cat}});
     }
   }
+
+  # read icons from icon path
+  my $iconSearchPath = $Foswiki::cfg{JQueryPlugin}{IconSearchPath}
+    || 'FamFamFamSilkIcons, FamFamFamSilkCompanion1Icons, FamFamFamSilkCompanion2Icons, FamFamFamSilkGeoSilkIcons, FamFamFamFlagIcons, FamFamFamMiniIcons, FamFamFamMintIcons';
+
+  my @iconSearchPath = split( /\s*,\s*/, $iconSearchPath );
+
+  foreach my $item (@iconSearchPath) {
+      my ( $web, $topic ) = Foswiki::Func::normalizeWebTopicName(
+          $Foswiki::cfg{SystemWebName}, $item );
+
+      my $iconDir =
+          $Foswiki::cfg{PubDir} . '/'
+        . $web . '/'
+        . $topic . '/';
+
+      opendir(my $dh, $iconDir) || next;
+      foreach my $icon (grep { /\.(png|gif|jpe?g)$/i } readdir($dh)) {
+        next if $icon =~ /^(SilkCompanion1Thumb|index_abc|igp_.*)\.png$/; # filter some more
+        my $id = $icon;
+        $id =~ s/\.(png|gif|jpe?g)$//i;
+        push @{$icons{$topic}}, {
+          id => $id,
+          name => $id,
+          url => Foswiki::Func::getPubUrlPath() . '/' . $web . '/' . $topic . '/' . $icon,
+          categories => [$topic],
+        };
+      }
+      closedir $dh;
+
+      #print STDERR "no icons at $web.$topic\n" unless $icons{$topic};
+
+      $numIcons += scalar(@{$icons{$topic}}) if $icons{$topic};
+  }
+
+  #print STDERR "num icons found: $numIcons\n";
 }
 
 sub renderForDisplay {
@@ -122,7 +167,13 @@ sub renderForDisplay {
 sub getDisplayValue {
     my ( $this, $value ) = @_;
 
-    return "<i class='fa fa-$value'></i> ".$value;
+    my $icon = Foswiki::Plugins::JQueryPlugin::handleJQueryIcon($this->{session}, {
+      _DEFAULT => $value
+    });
+
+    my $text = $value;
+    $text =~ s/^fa\-//;
+    return $icon.' '.$text;
 }
 
 1;
