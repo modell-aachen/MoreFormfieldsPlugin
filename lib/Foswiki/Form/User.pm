@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# MoreFormfieldsContrib is Copyright (C) 2010-2014 Michael Daum http://michaeldaumconsulting.com
+# MoreFormfieldsPlugin is Copyright (C) 2010-2014 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -43,7 +43,7 @@ sub addJavascript {
 
   Foswiki::Plugins::JQueryPlugin::createPlugin("select2");
   Foswiki::Func::addToZone("script", "FOSWIKI::USERFIELD", <<"HERE", "JQUERYPLUGIN::SELECT2");
-<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsContrib/userfield.js'></script>
+<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsPlugin/userfield.js'></script>
 HERE
 }
 

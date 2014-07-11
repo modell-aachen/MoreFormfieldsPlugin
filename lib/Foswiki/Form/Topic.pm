@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# MoreFormfieldsContrib is Copyright (C) 2010-2014 Michael Daum http://michaeldaumconsulting.com
+# MoreFormfieldsPlugin is Copyright (C) 2010-2014 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -161,8 +161,8 @@ sub renderForEdit {
 sub addStyles {
   #my $this = shift;
   Foswiki::Func::addToZone("head", 
-    "MOREFORMFIELDSCONTRIB::CSS",
-    "<link rel='stylesheet' href='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsContrib/moreformfields.css' media='all' />");
+    "MOREFORMFIELDSPLUGIN::CSS",
+    "<link rel='stylesheet' href='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsPlugin/moreformfields.css' media='all' />");
 
 }
 
@@ -171,7 +171,7 @@ sub addJavascript {
 
   Foswiki::Plugins::JQueryPlugin::createPlugin("select2");
   Foswiki::Func::addToZone("script", "FOSWIKI::TOPICFIELD", <<"HERE", "JQUERYPLUGIN::SELECT2");
-<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsContrib/topicfield.js'></script>
+<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsPlugin/topicfield.js'></script>
 HERE
 }
 

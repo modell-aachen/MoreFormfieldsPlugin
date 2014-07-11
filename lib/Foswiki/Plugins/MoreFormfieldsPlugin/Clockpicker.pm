@@ -1,4 +1,4 @@
-package Foswiki::Contrib::MoreFormfieldsContrib::Clockpicker;
+package Foswiki::Plugins::MoreFormfieldsPlugins::Clockpicker;
 
 use strict;
 use warnings;
@@ -17,8 +17,8 @@ sub new {
       homepage => 'http://weareoutman.github.io/clockpicker',
       javascript => ['clockpicker.js', 'clockpicker.init.js'],
       css => ['clockpicker.css'],
-      documentation => 'MoreFormfieldsContrib',
-      puburl => '%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsContrib',
+      documentation => 'MoreFormfieldsPlugin',
+      puburl => '%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsPlugin',
     ),
     $class
   );

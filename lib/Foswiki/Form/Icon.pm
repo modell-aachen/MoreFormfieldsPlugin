@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# MoreFormfieldsContrib is Copyright (C) 2010-2014 Michael Daum http://michaeldaumconsulting.com
+# MoreFormfieldsPlugin is Copyright (C) 2010-2014 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -59,7 +59,7 @@ sub renderForEdit {
   Foswiki::Plugins::JQueryPlugin::createPlugin("select2");
 
   Foswiki::Func::addToZone("script", "FOSWIKI::ICONFIELD", <<'HERE', "JQUERYPLUGIN::FONTAWESOME, JQUERYPLUGIN::SELECT2");
-<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsContrib/iconfield.js'></script>
+<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsPlugin/iconfield.js'></script>
 HERE
 
   $this->readIcons();
@@ -94,7 +94,7 @@ sub readIcons {
   return if %icons;
 
   # read fontawesome icons
-  my $iconFile = $Foswiki::cfg{PubDir}.'/'.$Foswiki::cfg{SystemWebName}.'/MoreFormfieldsContrib/icons.yml';
+  my $iconFile = $Foswiki::cfg{PubDir}.'/'.$Foswiki::cfg{SystemWebName}.'/MoreFormfieldsPlugin/icons.yml';
 
   my $yml = YAML::LoadFile($iconFile); 
 
