@@ -1,0 +1,20 @@
+.foswikiIpAddress,
+.foswikiNetmask,
+.foswikiMacAddress {
+  font-family:monospace;
+}
+.select2-results .image-item,
+.select2-container .image-item {
+  background-color:transparent !important;
+  background-repeat:no-repeat !important;
+  background-position:0 0 !important;
+  padding-left:35px;
+  position:initial !important;
+}
+.select2-container .image-item {
+  line-height:26px;
+}
+.select2-results .image-item {
+  height:32px;
+  line-height:32px;
+}

@@ -1,0 +1,3 @@
+Foswiki::Plugins::JQueryPlugin,>5.11,perl,Required
+Foswiki::Contrib::JQSelect2Contrib,>0,perl,Required
+YAML,>=0.90,cpan,Required
