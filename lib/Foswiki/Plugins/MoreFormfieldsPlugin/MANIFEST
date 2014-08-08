@@ -1,6 +1,7 @@
 data/System/MoreFormfieldsAjaxHelper.txt 0644
 data/System/MoreFormfieldsPlugin.txt 0644
 lib/Foswiki/Form/Autofill.pm 0644
+lib/Foswiki/Form/Dbquery.pm 0644
 lib/Foswiki/Form/Icon.pm 0644
 lib/Foswiki/Form/Id.pm 0644
 lib/Foswiki/Form/Ipaddress.pm 0644
@@ -24,6 +25,9 @@ pub/System/MoreFormfieldsPlugin/clockpicker.js 0644
 pub/System/MoreFormfieldsPlugin/clockpicker.js.gz 0644
 pub/System/MoreFormfieldsPlugin/clockpicker.uncompressed.css 0644
 pub/System/MoreFormfieldsPlugin/clockpicker.uncompressed.js 0644
+pub/System/MoreFormfieldsPlugin/dbqueryfield.js 0644
+pub/System/MoreFormfieldsPlugin/dbqueryfield.js.gz 0644
+pub/System/MoreFormfieldsPlugin/dbqueryfield.uncompressed.js 0644
 pub/System/MoreFormfieldsPlugin/iconfield.js 0644
 pub/System/MoreFormfieldsPlugin/iconfield.js.gz 0644
 pub/System/MoreFormfieldsPlugin/iconfield.uncompressed.js 0644
