@@ -52,7 +52,7 @@ jQuery(function($) {
         var tr = $('<tr></tr>').append(th).append(td);
         t.append(tr);
       });
-      $this.next('.foswikiDbQueryTable').remove();
+      $this.parent().find('.foswikiDbqueryTable').remove();
       $this.after(t);
     };
     var synthesizeObject = function() {
