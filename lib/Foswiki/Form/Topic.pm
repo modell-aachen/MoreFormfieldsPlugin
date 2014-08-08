@@ -42,7 +42,11 @@ sub new {
 sub isMultiValued { return shift->{type} =~ /\+multi/; }
 sub isValueMapped { return shift->{type} =~ /\+values/; }
 
-sub getDefaultValue { return ''; }
+sub getDefaultValue {
+    my $this = shift;
+    my $val = $this->param('default');
+    return defined($val) ? $val : '';
+}
 
 sub finish {
   my $this = shift;
