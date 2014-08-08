@@ -34,6 +34,7 @@ sub new {
     my $this  = $class->SUPER::new(@_);
 
     $this->{_formfieldClass} = 'foswikiTopicField';
+    $this->{_formfieldClass} .= ' foswikiMandatory' if ($this->{attributes} || '') =~ /M/;
     $this->{_web} = $this->param("web") || $this->{session}{webName};
 
     return $this;

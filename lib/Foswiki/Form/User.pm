@@ -33,6 +33,7 @@ sub new {
     my $this  = $class->SUPER::new(@_);
 
     $this->{_formfieldClass} = 'foswikiUserField';
+    $this->{_formfieldClass} .= ' foswikiMandatory' if ($this->{attributes} || '') =~ /M/;
     $this->{_web} = $this->param("web") || $Foswiki::cfg{UsersWebName};
 
     return $this;
