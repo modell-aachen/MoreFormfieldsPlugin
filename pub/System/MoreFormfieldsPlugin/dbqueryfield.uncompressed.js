@@ -6,7 +6,7 @@ jQuery(function($) {
   };
 
   $(".foswikiDbqueryField:not(.foswikiDbqueryFieldInited)").livequery(function() {
-    var $this = $(this), 
+    var $this = $(this),
         opts = $.extend({}, defaults, $this.data()),
         requestOpts = $.extend({}, opts),
         val = $this.val();
@@ -36,7 +36,8 @@ jQuery(function($) {
     $this.addClass("foswikiDbqueryFieldInited");
 
     var getff = function(name) {
-      return $this.closest('form').find('[name="'+name+'"]');
+      var prefix = opts.mapAffix ? $this.attr('name') : '';
+      return $this.closest('form').find('[name="'+prefix+name+'"]');
     };
 
     var formatDbqueryItem = function(item) {
@@ -66,7 +67,7 @@ jQuery(function($) {
         getff(k).val(o[k]);
       });
       drawTable();
-    }
+    };
 
     $this.select2({
       placeholder: opts.placeholder,
@@ -76,7 +77,7 @@ jQuery(function($) {
         url: opts.url,
         dataType: 'json',
         data: function (term, page) {
-          var params = 
+          var params =
             $.extend({}, {
               q: term, // search term
               limit: 10,
