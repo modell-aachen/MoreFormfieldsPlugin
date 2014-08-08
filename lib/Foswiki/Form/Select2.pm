@@ -90,7 +90,7 @@ sub renderForEdit {
   if ($this->isMultiValued()) {
     $params->{'multiple'} = 'multiple';
     if (defined $url) {
-      $value = CGI::Hidden($params);
+      $value = CGI::hidden($params);
     } else {
       $value = CGI::Select($params, $choices);
     }
@@ -103,7 +103,7 @@ sub renderForEdit {
     $value .= '<input type="hidden" name="' . $this->{name} . '" value="" />';
   } else {
     if (defined $url) {
-      $value = CGI::Hidden($params);
+      $value = CGI::hidden($params);
     } else {
       $value = CGI::Select($params, $choices);
     }
