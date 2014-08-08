@@ -85,7 +85,7 @@ sub renderForEdit {
     'data-allow-clear' => $this->param("allowClear") || 'false',
   };
   if (defined $url) {
-    $params->{url} = $url;
+    $params->{'data-url'} = $url;
   }
   if ($this->isMultiValued()) {
     $params->{'multiple'} = 'multiple';
