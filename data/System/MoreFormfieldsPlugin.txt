@@ -11,8 +11,16 @@ These are:
    * =ipaddress=: a general purpose IP4 address, consisting of 4 octets, e.g. =10.0.0.1=
    * =netmask=: a special IP address used for routing, consisting of 4 octets, e.g. =255.255.255.0=
    * =macaddress=: a hardware address given in 6 hex values, e.g. =00:1a:10:6f:ba:12=
-   * =user=
-   * =topic=
+   * =topic=: topic autocomplete. Parameters can be added in the value column and are structured like macro parameters, with the following options available:
+      * =web=: the web the user can choose topics from; defaults to current web
+      * =default=: the default value to use if no value exists yet
+      * =url=: URL for autocomplete, default: =%SCRIPTURL{view}%/%SYSTEMWEB%/MoreFormfieldsAjaxHelper?section&#61;select2::topic;skin&#61;text;contenttype&#61;application/json%3Bcharset%3Dutf-8=
+      * ... and any select2 option
+   * =user=: user autocomplete. Parameters work the same way as for =topic= and the same parameters are available.
+      * =url=: default: =%SCRIPTURL{view}%/%SYSTEMWEB%/MoreFormfieldsAjaxHelper?section&#61;select2::user;skin&#61;text;contenttype&#61;application/json%3Bcharset%3Dutf-8=
+   * =select2=: Select2 widget with pre-defined available values (or an arbitrary AJAX helper). Parameters work the same way as for =topic=, but in the 'attributes' column. Be careful to not accidentally use a capital 'H' or 'M' in any parameter because otherwise the field will be interpreted as hidden or mandatory.
+      * any select2 option can be used.
+      * In the values column, put a URL to use it as an AJAX helper, or a comma-separated list of values just like for a normal select. (For select2+values you can use a list of mapped values as for select+values.)
    * =autofill=
    * =phonenumber=
    * =time=
