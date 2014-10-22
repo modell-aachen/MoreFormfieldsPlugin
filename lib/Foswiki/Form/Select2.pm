@@ -91,6 +91,7 @@ sub renderForEdit {
     $params->{style} = 'width: '.$this->{size}.'ex;' if $this->{size};
     my $initUrl = $this->param('initUrl');
     $params->{'data-initUrl'} = $initUrl if $initUrl;
+    $params->{value} = $value;
   }
   if ($this->isMultiValued()) {
     $params->{'multiple'} = 'multiple';
