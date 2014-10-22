@@ -1,7 +1,7 @@
 jQuery(function($) {
   var defaults = {
     minimumInputLength: 0,
-    width: 'element',
+    width: 'resolve',
     quietMillis:500
   };
 

@@ -86,6 +86,7 @@ sub renderForEdit {
   };
   if (defined $url) {
     $params->{'data-url'} = $url;
+    $params->{style} = 'width: '.$this->{size}.'ex;' if $this->{size};
   }
   if ($this->isMultiValued()) {
     $params->{'multiple'} = 'multiple';
