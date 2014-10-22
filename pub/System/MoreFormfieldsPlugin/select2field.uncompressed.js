@@ -14,9 +14,9 @@ jQuery(function($) {
 
     delete requestOpts.minimumInputLength;
     delete requestOpts.url;
+    delete requestOpts.initUrl;
     delete requestOpts.width;
     delete requestOpts.quietMillis;
-    delete requestOpts.valueText;
 
     $this.addClass("foswikiSelect2FieldInited");
 
@@ -38,6 +38,20 @@ jQuery(function($) {
               page: page
             }, requestOpts);
           return params;
+        },
+        initSelection: function(elem, callback) {
+          var $e = $(elem);
+          if (opts.initUrl) {
+            $.ajax(opts.initUrl +';id='+ $e.val()).
+            then(function(data, textStatus, xhr) {
+              callback(data);
+            }).
+            fail(function() {
+              callback({id: $e.val(), text: $e.val()});
+            });
+          } else {
+            callback({id: $e.val(), text: $e.val()});
+          }
         },
         results: function(data, page) {
           data.more = (page * (requestOpts.limit || 10)) < data.total;
