@@ -35,7 +35,9 @@ sub param {
   my ($this, $key) = @_;
 
   unless (defined $this->{_params}) {
-    my %params = Foswiki::Func::extractParameters($this->{attributes});
+    my ($web, $topic) = @{$this}{'web', 'topic'};
+    my $form = Foswiki::Form->new($Foswiki::Plugins::SESSION, $web, $topic);
+    my %params = Foswiki::Func::extractParameters($form->expandMacros($this->{attributes}));
     $this->{_params} = \%params;
   }
 
