@@ -15,8 +15,22 @@ jQuery(function($) {
     delete requestOpts.minimumInputLength;
     delete requestOpts.url;
     delete requestOpts.initurl;
+    delete requestOpts.ajaxpassfields;
     delete requestOpts.width;
     delete requestOpts.quietMillis;
+
+    if (opts.ajaxpassfields) {
+      var form = $this.closest('form');
+      var apf = opts.ajaxpassfields;
+      opts.ajaxpassfields = {};
+      $.each(apf.split(/\s*,\s*/), function(k, v) {
+        v = v.split(/:/);
+        if (v.length === 1) {
+          v[1] = v[0];
+        }
+        opts.ajaxpassfields[v[0]] = form.find('[name="'+v[1]+'"]');
+      });
+    }
 
     $this.addClass("foswikiSelect2FieldInited");
 
@@ -27,12 +41,23 @@ jQuery(function($) {
       width: opts.width
     };
     if (opts.url) {
+      var makeParams = function() {
+        if (!opts.ajaxpassfields) {
+          return {};
+        } else {
+          var res = {};
+          $.each(opts.ajaxpassfields, function(k, v) {
+            res[k] = v.val();
+          });
+          return res;
+        }
+      };
       select2opts.ajax = {
         url: opts.url,
         dataType: 'json',
         data: function(term, page) {
           var params =
-            $.extend({}, {
+            $.extend(makeParams(), {
               q: term, // search term
               limit: 10,
               page: page

@@ -91,6 +91,8 @@ sub renderForEdit {
     $params->{style} = 'width: '.$this->{size}.'ex;' if $this->{size};
     my $initUrl = $this->param('initUrl');
     $params->{'data-initurl'} = $initUrl if $initUrl;
+    my $apf = $this->param('ajaxPassFields');
+    $params->{'data-ajaxpassfields'} = $apf if $apf;
     $params->{value} = $value;
   }
   if ($this->isMultiValued()) {
