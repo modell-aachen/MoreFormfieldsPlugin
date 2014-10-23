@@ -47,7 +47,13 @@ jQuery(function($) {
         } else {
           var res = {};
           $.each(opts.ajaxpassfields, function(k, v) {
-            res[k] = v.val();
+            if (v.is('[type="checkbox"]')) {
+              res[k] = v.filter(':checked').map(function() {
+                return $(this).val();
+              }).get().join(',');
+            } else {
+              res[k] = v.val();
+            }
           });
           return res;
         }
