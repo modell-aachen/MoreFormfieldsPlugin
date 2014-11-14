@@ -35,7 +35,9 @@ sub param {
   my ($this, $key) = @_;
 
   unless (defined $this->{_params}) {
-    my %params = Foswiki::Func::extractParameters($this->{attributes});
+    my ($web, $topic) = @{$this}{'web', 'topic'};
+    my $form = Foswiki::Form->new($Foswiki::Plugins::SESSION, $web, $topic);
+    my %params = Foswiki::Func::extractParameters($form->expandMacros($this->{attributes}));
     $this->{_params} = \%params;
   }
 
@@ -86,6 +88,12 @@ sub renderForEdit {
   };
   if (defined $url) {
     $params->{'data-url'} = $url;
+    $params->{style} = 'width: '.$this->{size}.'ex;' if $this->{size};
+    my $initUrl = $this->param('initUrl');
+    $params->{'data-initurl'} = $initUrl if $initUrl;
+    my $apf = $this->param('ajaxPassFields');
+    $params->{'data-ajaxpassfields'} = $apf if $apf;
+    $params->{value} = $value;
   }
   if ($this->isMultiValued()) {
     $params->{'multiple'} = 'multiple';

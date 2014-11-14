@@ -19,8 +19,12 @@ These are:
    * =user=: user autocomplete. Parameters work the same way as for =topic= and the same parameters are available.
       * =url=: default: =%SCRIPTURL{view}%/%SYSTEMWEB%/MoreFormfieldsAjaxHelper?section&#61;select2::user;skin&#61;text;contenttype&#61;application/json%3Bcharset%3Dutf-8=
    * =select2=: Select2 widget with pre-defined available values (or an arbitrary AJAX helper). Parameters work the same way as for =topic=, but in the 'attributes' column. Be careful to not accidentally use a capital 'H' or 'M' in any parameter because otherwise the field will be interpreted as hidden or mandatory.
-      * any select2 option can be used.
-      * In the values column, put a URL to use it as an AJAX helper, or a comma-separated list of values just like for a normal select. (For select2+values you can use a list of mapped values as for select+values.)
+      * In the values column, just like in the =textboxlist= widget, put a URL to use it as an AJAX helper, or a comma-separated list of values just like for a normal select. (For select2+values you can use a list of mapped values as for select+values.)
+      * =placeholder=: string to show when no value has been selected.
+      * =width=: how to calculate the element's width (see Select2 documentation for details).
+      * =allowClear=: true if there should be a button to empty the widget.
+      * =initUrl=: URL to an AJAX helper that will generate a display version of a pre-set value. The helper expects an =id= GET parameter containing the pre-set value, and is expected to return a JSON object consisting of an =id= and a =text= member. If no helper is defined, the raw value will be displayed instead. This is currently not supported for =multi= elements.
+      * =ajaxPassFields=: comma-separated list of =key:value= pairs; =value= is the name of a form field and =key= is the name of the GET parameter in which the AJAX helper will receive the current value of that form field. This allows for AJAX queries parameterized on other form fields.
    * =autofill=
    * =phonenumber=
    * =time=
