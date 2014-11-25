@@ -2,6 +2,7 @@ data/System/MoreFormfieldsAjaxHelper.txt 0644
 data/System/MoreFormfieldsPlugin.txt 0644
 lib/Foswiki/Form/Autofill.pm 0644
 lib/Foswiki/Form/Dbquery.pm 0644
+lib/Foswiki/Form/Firstallcheckbox.pm 0644
 lib/Foswiki/Form/Icon.pm 0644
 lib/Foswiki/Form/Id.pm 0644
 lib/Foswiki/Form/Ipaddress.pm 0644
