@@ -18,6 +18,9 @@ jQuery(function($) {
     delete requestOpts.ajaxpassfields;
     delete requestOpts.width;
     delete requestOpts.quietMillis;
+    delete requestOpts.multiple;
+    delete requestOpts.mappertopic;
+    delete requestOpts.mappersection;
 
     if (opts.ajaxpassfields) {
       var form = $this.closest('form');
@@ -38,7 +41,8 @@ jQuery(function($) {
     var select2opts = {
       placeholder: opts.placeholder,
       minimumInputLength: opts.minimumInputLength,
-      width: opts.width
+      width: opts.width,
+      multiple: opts.multiple
     };
     if (opts.url) {
       var makeParams = function() {
@@ -77,7 +81,12 @@ jQuery(function($) {
       };
       select2opts.initSelection = function(elem, callback) {
         var $e = $(elem);
-        if (opts.initurl) {
+        if (opts.initurl || (opts.mappertopic && opts.mappersection)) {
+          if (!opts.initurl) {
+            var p = foswiki.preferences;
+            opts.initurl = p.SCRIPTURL +'/rest'+ p.SCRIPTSUFFIX +'/RenderPlugin/tag?name=INCLUDE;param='+
+              opts.mappertopic +';section='+ opts.mappersection;
+          }
           $.ajax(opts.initurl +';id='+ $e.val(), {
             dataType: 'json'
           }).
@@ -85,10 +94,20 @@ jQuery(function($) {
             callback(data);
           }).
           fail(function() {
-            callback({id: $e.val(), text: $e.val()});
+            if (opts.multiple || $e.attr('multiple')) {
+              var vals = $e.val().split(/\s*,\s*/);
+              callback($.map(vals, function() { return {id: this, text: this}; }));
+            } else {
+              callback({id: $e.val(), text: $e.val()});
+            }
           });
         } else {
-          callback({id: $e.val(), text: $e.val()});
+          if (opts.multiple || $e.attr('multiple')) {
+            var vals = $e.val().split(/\s*,\s*/);
+            callback($.map(vals, function() { return {id: this, text: this}; }));
+          } else {
+            callback({id: $e.val(), text: $e.val()});
+          }
         }
       };
     }
