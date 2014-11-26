@@ -21,6 +21,7 @@ jQuery(function($) {
     delete requestOpts.multiple;
     delete requestOpts.mappertopic;
     delete requestOpts.mappersection;
+    delete requestOpts.allowClear;
 
     if (opts.ajaxpassfields) {
       var form = $this.closest('form');
@@ -42,7 +43,8 @@ jQuery(function($) {
       placeholder: opts.placeholder,
       minimumInputLength: opts.minimumInputLength,
       width: opts.width,
-      multiple: opts.multiple
+      multiple: opts.multiple,
+      allowClear: !!(opts.allowClear)
     };
     if (opts.url) {
       var makeParams = function() {
