@@ -112,6 +112,9 @@ jQuery(function($) {
           }
         }
       };
+      select2ops.formatSelection = function(object, container) {
+        return object.textSelected || object.text;
+      };
     }
     $this.select2(select2opts);
   });
