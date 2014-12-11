@@ -112,7 +112,7 @@ jQuery(function($) {
           }
         }
       };
-      select2ops.formatSelection = function(object, container) {
+      select2opts.formatSelection = function(object, container) {
         return object.textSelected || object.text;
       };
     }
