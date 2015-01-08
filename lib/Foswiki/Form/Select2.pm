@@ -123,6 +123,8 @@ sub renderForEdit {
     $params->{'data-mappersection'} = $mapperSection if $mapperSection;
     my $apf = $this->param('ajaxPassFields');
     $params->{'data-ajaxpassfields'} = $apf if $apf;
+    my $resf = $this->param('resultsFilter');
+    $params->{'data-resultsfilter'} = $resf if $resf;
     $params->{value} = $value;
   }
   if ($this->isMultiValued()) {

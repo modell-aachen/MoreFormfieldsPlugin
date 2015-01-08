@@ -22,6 +22,7 @@ jQuery(function($) {
     delete requestOpts.mappertopic;
     delete requestOpts.mappersection;
     delete requestOpts.allowClear;
+    delete requestOpts.resultsfilter;
 
     if (opts.ajaxpassfields) {
       var form = $this.closest('form');
@@ -78,6 +79,9 @@ jQuery(function($) {
         },
         results: function(data, page) {
           data.more = (page * (requestOpts.limit || 10)) < data.total;
+          if (opts.resultsfilter) {
+            data = window[opts.resultsfilter](data);
+          }
           return data;
         }
       };
