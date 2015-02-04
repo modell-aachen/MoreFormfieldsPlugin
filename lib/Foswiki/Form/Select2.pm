@@ -57,6 +57,11 @@ sub getOptions {
   return \@values;
 }
 
+sub getDefaultValue {
+  my $this = shift;
+  $this->param('defaultValue') || '';
+}
+
 sub param {
   my ($this, $key) = @_;
 
