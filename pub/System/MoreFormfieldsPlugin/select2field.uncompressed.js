@@ -97,6 +97,11 @@ jQuery(function($) {
             dataType: 'json'
           }).
           then(function(data, textStatus, xhr) {
+            if (!opts.multiple && data instanceof Array) {
+              data = data[0];
+            } else if (opts.multiple && !(data instanceof Array)) {
+              data = [data];
+            }
             callback(data);
           }).
           fail(function() {
