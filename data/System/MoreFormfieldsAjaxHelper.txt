@@ -45,38 +45,9 @@
 
 ---++ user field backend
 <verbatim class="tml">
-%STARTSECTION{"select2::user"}%<literal>%DBQUERY{
-   "form='\b%IF{
-      "defined form" 
-      then="%URLPARAM{"form"}%"
-      else="UserForm"
-    }%\b' AND %FORMATLIST{
-      "%IF{
-        "'%URLPARAM{"q"}%'=''" 
-        then="." 
-        else="%URLPARAM{"q"}%"
-      }%" 
-      split="\s+" 
-      format="lc(%URLPARAM{"property" default="topictitle"}%)=~lc('$1')" separator=" AND "
-   }%"
-   web="%USERSWEB%" 
-   skip="%CALCULATE{"$EVAL(%URLPARAM{"limit" default="10"}%*(%URLPARAM{"page" default="1"}%-1))"}%"
-   limit="%URLPARAM{"limit" default="10"}%"
-   format="  {
-    \"id\":\"$topic\", 
-    \"text\":\"$expand(topictitle)\",
-    \"thumbnail\":\"$percntATTACHMENTS{\"$web.$topic\"
-         name=\".*\.(jpe?g|gif|png|JE?PG|GIF|PNG)\" 
-         warn=\"off\" 
-         limit=\"1\" 
-         sort=\"comment:name\"
-         hidenull=\"off\"
-         format=\"%SCRIPTURLPATH{"rest"}%/ImagePlugin/resize?topic=$web.$topic&file=$dollarname&size=32x32>\"
-         nullformat=\"%SCRIPTURLPATH{"rest"}%/ImagePlugin/resize?topic=%SYSTEMWEB%.MetaCommentPlugin&file=nobody.gif&size=32x32>\"
-    }$percnt\"
-   }"
-   separator=",$n"
-   header="{\"results\":[$n"
-   footer="$n], \"total\":$count}"
-}%</literal>%ENDSECTION{"select2::user"}%
+%STARTSECTION{"select2::user"}%<literal>[%QUERYUSERS{
+  urlparam="q"
+  format="{\"id\":\"$cUID\",\"text\":\"$displayName\"}"
+  limit="20"
+}%]</literal>%ENDSECTION{"select2::user"}%
 </verbatim>
