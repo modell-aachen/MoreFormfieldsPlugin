@@ -117,9 +117,9 @@ sub renderForEdit {
     'data-width' => $this->param("width") || 'element',
     'data-allow-clear' => $this->param("allowClear") || 'false',
   };
+  $params->{style} = 'width: '.$this->{size}.'ex;' if $this->{size};
   if (defined $url) {
     $params->{'data-url'} = $url;
-    $params->{style} = 'width: '.$this->{size}.'ex;' if $this->{size};
     my $initUrl = $this->param('initUrl');
     $params->{'data-initurl'} = $initUrl if $initUrl;
     my $mapperTopic = $this->param('mapperTopic');
