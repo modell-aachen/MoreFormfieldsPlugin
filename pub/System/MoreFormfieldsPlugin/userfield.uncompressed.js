@@ -2,6 +2,7 @@ jQuery(function($) {
   var defaults = {
     minimumInputLength: 0,
     url: foswiki.getPreference('SCRIPTURL')+'/view/'+foswiki.getPreference('SYSTEMWEB')+'/MoreFormfieldsAjaxHelper?section=select2::user&skin=text&contenttype=application/json%3Bcharset%3Dutf-8',
+    initUrl: foswiki.getPreference('SCRIPTURL')+'/view/'+foswiki.getPreference('SYSTEMWEB')+'/MoreFormfieldsAjaxHelper?section=select2::user::init&skin=text&contenttype=application/json%3Bcharset%3Dutf-8',
     width: 'element',
     quietMillis:500
   };
@@ -61,11 +62,15 @@ jQuery(function($) {
               limit: 1,
               property: 'topic'
             }, requestOpts);
-          $.ajax(opts.url, {
+          $.ajax(opts.initUrl, {
             data: params,
             dataType: 'json'
           }).done(function(data) { 
-            callback(data.results[0]); 
+            if (opts.multiple) {
+              callback(data.results);
+            } else {
+              callback(data.results[0]);
+            }
           });
         }
       },
