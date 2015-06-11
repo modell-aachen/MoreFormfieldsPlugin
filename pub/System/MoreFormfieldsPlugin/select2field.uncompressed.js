@@ -33,7 +33,11 @@ jQuery(function($) {
         if (v.length === 1) {
           v[1] = v[0];
         }
-        opts.ajaxpassfields[v[0]] = form.find('[name="'+v[1]+'"]');
+        if (v[1].match(/^=/)) {
+          opts.ajaxpassfields[v[0]] = v[1].replace(/^=/, '');
+        } else {
+          opts.ajaxpassfields[v[0]] = form.find('[name="'+v[1]+'"]');
+        }
       });
     }
 
@@ -54,7 +58,9 @@ jQuery(function($) {
         } else {
           var res = {};
           $.each(opts.ajaxpassfields, function(k, v) {
-            if (v.is('[type="checkbox"]')) {
+            if (typeof v === 'string') {
+              res[k] = v;
+            } else if (v.is('[type="checkbox"]')) {
               res[k] = v.filter(':checked').map(function() {
                 return $(this).val();
               }).get().join(',');
