@@ -20,6 +20,7 @@ use warnings;
 
 use Foswiki::Form::Select ();
 use Foswiki::Plugins::JQueryPlugin ();
+use Foswiki::Plugins::MoreFormfieldsPlugin ();
 our @ISA = ('Foswiki::Form::Select');
 
 use Assert;
@@ -210,7 +211,7 @@ sub addJavascript {
 
   Foswiki::Plugins::JQueryPlugin::createPlugin("select2");
   Foswiki::Func::addToZone("script", "FOSWIKI::SELECT2FIELD", <<"HERE", "JQUERYPLUGIN::SELECT2");
-<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsPlugin/select2field.js'></script>
+<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsPlugin/select2field.js?v=$Foswiki::Plugins::MoreFormfieldsPlugin::RELEASE'></script>
 HERE
 }
 
