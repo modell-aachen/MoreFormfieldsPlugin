@@ -38,6 +38,7 @@ jQuery(function($) {
       placeholder: opts.placeholder,
       minimumInputLength: opts.minimumInputLength,
       width: opts.width,
+      multiple: opts.multiple || false,
       ajax: {
         url: opts.url,
         dataType: 'json',
