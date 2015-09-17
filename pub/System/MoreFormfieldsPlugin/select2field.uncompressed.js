@@ -14,13 +14,10 @@ jQuery(function($) {
 
     delete requestOpts.minimumInputLength;
     delete requestOpts.url;
-    delete requestOpts.initurl;
     delete requestOpts.ajaxpassfields;
     delete requestOpts.width;
     delete requestOpts.quietMillis;
     delete requestOpts.multiple;
-    delete requestOpts.mappertopic;
-    delete requestOpts.mappersection;
     delete requestOpts.allowClear;
     delete requestOpts.resultsfilter;
 
@@ -89,42 +86,6 @@ jQuery(function($) {
             data = window[opts.resultsfilter](data);
           }
           return data;
-        }
-      };
-      select2opts.initSelection = function(elem, callback) {
-        var $e = $(elem);
-        if (opts.initurl || (opts.mappertopic && opts.mappersection)) {
-          if (!opts.initurl) {
-            var p = foswiki.preferences;
-            opts.initurl = p.SCRIPTURL +'/rest'+ p.SCRIPTSUFFIX +'/RenderPlugin/tag?name=INCLUDE;param='+
-              opts.mappertopic +';section='+ opts.mappersection;
-          }
-          $.ajax(opts.initurl +';id='+ $e.val(), {
-            dataType: 'json'
-          }).
-          then(function(data, textStatus, xhr) {
-            if (!opts.multiple && data instanceof Array) {
-              data = data[0];
-            } else if (opts.multiple && !(data instanceof Array)) {
-              data = [data];
-            }
-            callback(data);
-          }).
-          fail(function() {
-            if (opts.multiple || $e.attr('multiple')) {
-              var vals = $e.val().split(/\s*,\s*/);
-              callback($.map(vals, function() { return {id: this, text: this}; }));
-            } else {
-              callback({id: $e.val(), text: $e.val()});
-            }
-          });
-        } else {
-          if (opts.multiple || $e.attr('multiple')) {
-            var vals = $e.val().split(/\s*,\s*/);
-            callback($.map(vals, function() { return {id: this, text: this}; }));
-          } else {
-            callback({id: $e.val(), text: $e.val()});
-          }
         }
       };
       select2opts.formatSelection = function(object, container) {

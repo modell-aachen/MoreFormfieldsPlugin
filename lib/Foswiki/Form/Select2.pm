@@ -104,6 +104,22 @@ sub renderForEdit {
   my $url;
   if (@options && $options[0] =~ /^https?:\/\//) {
     $url = $options[0];
+
+    my @values = grep { defined $_ && /\S/ } split(/\s*,\s*/, $value);
+    my @labels;
+    if ($this->param('displayTopic') && $this->param('displaySection')) {
+      @labels = $this->mapValuesToLabels(@values);
+    }
+    while (my $v = shift @values) {
+      my %params;
+      my $label = $v;
+      if (@labels) {
+        $params{value} = $v;
+        $label = shift @labels;
+      }
+      $label =~ s/<nop/&lt;nop/g;
+      $choices .= _maketag('option', \%params, $label);
+    }
   } else {
     foreach my $item (@options) {
       my $option = $item;    # Item9647: make a copy not to modify the original value in the array
@@ -130,40 +146,21 @@ sub renderForEdit {
     class => $this->cssClasses('foswikiSelect2Field'),
     name => $this->{name},
     size => $this->{size},
-    'data-placeholder' => $this->param("placeholder") || 'select ...', 
     'data-width' => $this->param("width") || 'element',
     'data-allow-clear' => $this->param("allowClear") || 'false',
   };
+  $params{'data-placeholder'} = $this->param('placeholder') if defined $this->param('placeholder');
   $params->{style} = 'width: '.$this->{size}.'ex;' if $this->{size};
   if (defined $url) {
     $params->{'data-url'} = $url;
-    my $initUrl = $this->param('initUrl');
-    $params->{'data-initurl'} = $initUrl if $initUrl;
-    my $mapperTopic = $this->param('mapperTopic');
-    $params->{'data-mappertopic'} = $mapperTopic if $mapperTopic;
-    my $mapperSection = $this->param('mapperSection');
-    $params->{'data-mappersection'} = $mapperSection if $mapperSection;
     my $apf = $this->param('ajaxPassFields');
     $params->{'data-ajaxpassfields'} = $apf if $apf;
     my $resf = $this->param('resultsFilter');
     $params->{'data-resultsfilter'} = $resf if $resf;
     $params->{value} = $value;
   }
-  if ($this->isMultiValued()) {
-    if (defined $url) {
-      $params->{'data-multiple'} = 'true';
-      $value = _maketag('hidden', $params);
-    } else {
-      $params->{'multiple'} = 'multiple';
-      $value = _maketag('select', $params, $choices);
-    }
-  } else {
-    if (defined $url) {
-      $value = _maketag('hidden', $params);
-    } else {
-      $value = _maketag('select', $params, $choices);
-    }
-  }
+  $params->{'multiple'} = 'multiple';
+  $value = _maketag('select', $params, $choices);
 
   $this->addJavascript();
 
@@ -181,6 +178,25 @@ sub renderForDisplay {
   return $this->SUPER::renderForDisplay($format, $value, $attrs);
 }
 
+sub mapValuesToLabels {
+  my ($this, @values) = @_;
+
+  my $session = $Foswiki::Plugins::SESSION;
+  my $mweb;
+  ($mweb, $mtopic) = Foswiki::Func::normalizeWebTopicName(undef, $this->param('displayTopic'));
+  my ($meta, $text) = Foswiki::Func::readTopic($mweb, $mtopic);
+  return @values unless $meta && $meta->haveAccess('VIEW');
+
+  $session->{prefs}->pushTopicContext($mweb, $mtopic);
+
+  $text =~ s/^.*%STARTSECTION\{(?:\s*name\s*=)?\s*"?$msec"?\s*\}%//s;
+  $text =~ s/%(?:STOP|END)SECTION\{(?:\s*name\s*=)?\s*"?$msec"?\s*\}%.*$//s;
+
+  my @res = map { $session->{prefs}->setSessionPreferences(id => $_); $meta->expandMacros($text) } @$values;
+  $session->{prefs}->popTopicContext();
+  @res;
+}
+
 sub getDisplayValue {
   my ($this, $value) = @_;
 
@@ -194,21 +210,7 @@ sub getDisplayValue {
       if ($this->isMultiValued()) {
         @v = split(/\s*,\s*/, $value);
       }
-      my $session = $Foswiki::Plugins::SESSION;
-      my $mweb;
-      ($mweb, $mtopic) = Foswiki::Func::normalizeWebTopicName(undef, $this->param('displayTopic'));
-      my ($meta, $text) = Foswiki::Func::readTopic($mweb, $mtopic);
-      return $value unless $meta && $meta->haveAccess('VIEW');
-
-      $session->{prefs}->pushTopicContext($mweb, $mtopic);
-
-      $text =~ s/^.*%STARTSECTION\{(?:\s*name\s*=)?\s*"?$msec"?\s*\}%//s;
-      $text =~ s/%(?:STOP|END)SECTION\{(?:\s*name\s*=)?\s*"?$msec"?\s*\}%.*$//s;
-
-      my @res = map { $session->{prefs}->setSessionPreferences(id => $_); $meta->expandMacros($text) } @v;
-      $session->{prefs}->popTopicContext();
-
-      return join($this->param('separator') || ', ', @res);
+      return join($this->param('separator') || ', ', $this->mapValuesToLabels(@v));
     } else {
       return $value;
     }
