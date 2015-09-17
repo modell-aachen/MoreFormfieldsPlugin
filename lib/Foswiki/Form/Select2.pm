@@ -74,7 +74,20 @@ sub param {
     $this->{_params} = \%params;
   }
 
-  return (defined $key)?$this->{_params}{$key}:$this->{_params};
+  if (defined $key) {
+    my $res = $this->{_params}{$key};
+    $res = $this->{_defaultsettings}{$key} unless defined $res;
+    return $res;
+  }
+  return $this->{_params};
+}
+
+sub cssClasses {
+  my $this = shift;
+  my $addClass = $this->param('cssClasses');
+  push @_, $addClass if $addClass;
+
+  $this->SUPER::cssClasses(@_);
 }
 
 sub _maketag {
@@ -96,6 +109,7 @@ sub renderForEdit {
   my ($this, $topicObject, $value) = @_;
 
   my $choices = '';
+  my $choices_count = 0;
 
   $value = '' unless defined $value;
   my %isSelected = map { $_ => 1 } split(/\s*,\s*/, $value);
@@ -119,11 +133,12 @@ sub renderForEdit {
       }
       $label =~ s/<nop/&lt;nop/g;
       $choices .= _maketag('option', \%params, $label);
+      $choices_count++;
     }
   } else {
     foreach my $item (@options) {
       my $option = $item;    # Item9647: make a copy not to modify the original value in the array
-      my %params = (class => 'foswikiOption',);
+      my %params;
       $params{selected} = 'selected' if $isSelected{$option};
       if ($this->{_descriptions}{$option}) {
         $params{title} = $this->{_descriptions}{$option};
@@ -134,9 +149,10 @@ sub renderForEdit {
       }
       $option =~ s/<nop/&lt\;nop/go;
       $choices .= _maketag('option', \%params, $option);
+      $choices_count++;
     }
   }
-  my $size = scalar(@{$this->getOptions()});
+  $size = $choices_count;
   if ($size > $this->{maxSize}) {
     $size = $this->{maxSize};
   } elsif ($size < $this->{minSize}) {

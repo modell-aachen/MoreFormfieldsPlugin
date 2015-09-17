@@ -25,27 +25,30 @@ BEGIN {
     }
 }
 
-use Foswiki::Form::Topic ();
-our @ISA = ('Foswiki::Form::Topic');
+our @ISA = ('Foswiki::Form::Select2');
 
 sub new {
     my $class = shift;
     my $this  = $class->SUPER::new(@_);
 
-    $this->{_formfieldClass} = 'foswikiUserField';
-    $this->{_formfieldClass} .= ' foswikiMandatory' if ($this->{attributes} || '') =~ /M/;
-    $this->{_web} = $this->param("web") || $Foswiki::cfg{UsersWebName};
-
+    $this->{_defaultsettings}{cssClasses} = 'foswikiUserField';
+    $this->{_defaultsettings}{displayTopic} = "$Foswiki::cfg{SystemWebName}.MoreFormfieldsAjaxHelper";
+    $this->{_defaultsettings}{displaySection} = "user_display";
     return $this;
 }
 
-sub addJavascript {
+sub getOptions {
   my $this = shift;
+  my $raw = shift;
+  my @values = @{$this->SUPER::getOptions()};
 
-  Foswiki::Plugins::JQueryPlugin::createPlugin("select2");
-  Foswiki::Func::addToZone("script", "FOSWIKI::USERFIELD", <<"HERE", "JQUERYPLUGIN::SELECT2");
-<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsPlugin/userfield.js'></script>
-HERE
+  return \@values if $raw || !@values || $values[0] !~ /^https?:\/\//;
+
+  return Foswiki::Func::getScriptUrl($Foswiki::cfg{SystemWebName}, 'MoreFormfieldsAjaxHelper', 'view',
+    skin => 'text',
+    contenttype => 'text/plain',
+    section => 'user',
+  );
 }
 
 1;
