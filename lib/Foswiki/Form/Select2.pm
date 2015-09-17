@@ -24,6 +24,7 @@ use Foswiki::Plugins::MoreFormfieldsPlugin ();
 our @ISA = ('Foswiki::Form::Select');
 
 use Assert;
+use HTML::Entities;
 
 BEGIN {
   if ($Foswiki::cfg{UseLocale}) {
@@ -76,6 +77,21 @@ sub param {
   return (defined $key)?$this->{_params}{$key}:$this->{_params};
 }
 
+sub _maketag {
+  my ($tag, $params, $content, $forceempty) = @_;
+  my $res = "<$tag";
+  while (my ($k, $v) = each(%$params)) {
+    $res .= " $k=\"";
+    $res .= encode_entities($v, '<>&"');
+    $res .= '"';
+  }
+  $content = '' unless defined $content;
+  if ($content eq '' && !$forceempty) {
+    return "$res />";
+  }
+  return "$res>$content</$tag>";
+}
+
 sub renderForEdit {
   my ($this, $topicObject, $value) = @_;
 
@@ -101,7 +117,7 @@ sub renderForEdit {
         $option = $this->{valueMap}{$option};
       }
       $option =~ s/<nop/&lt\;nop/go;
-      $choices .= CGI::option(\%params, $option);
+      $choices .= _maketag('option', \%params, $option);
     }
   }
   my $size = scalar(@{$this->getOptions()});
@@ -136,16 +152,16 @@ sub renderForEdit {
   if ($this->isMultiValued()) {
     if (defined $url) {
       $params->{'data-multiple'} = 'true';
-      $value = CGI::hidden($params);
+      $value = _maketag('hidden', $params);
     } else {
       $params->{'multiple'} = 'multiple';
-      $value = CGI::Select($params, $choices);
+      $value = _maketag('select', $params, $choices);
     }
   } else {
     if (defined $url) {
-      $value = CGI::hidden($params);
+      $value = _maketag('hidden', $params);
     } else {
-      $value = CGI::Select($params, $choices);
+      $value = _maketag('select', $params, $choices);
     }
   }
 

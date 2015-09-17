@@ -49,6 +49,28 @@ sub getDefaultValue {
     return defined($val) ? $val : '';
 }
 
+sub getOptions {
+  my $this = shift;
+  my $raw = shift;
+
+  my $query = Foswiki::Func::getCgiQuery();
+
+  # just take whatever we get via query (we don't have a full list of valid values)
+  my @values = ();
+  my @valuesFromQuery = $query->param( $this->{name} );
+  foreach my $item (@valuesFromQuery) {
+
+    # Item10889: Coming from an "Warning! Confirmation required", often
+    # there's an undef item (the, last, empty, one, <-- here)
+    if ( defined $item ) {
+      foreach my $value ( split( /\s*,\s*/, $item ) ) {
+        push @values, $value if defined $value;
+      }
+    }
+  }
+  return \@values;
+}
+
 sub finish {
   my $this = shift;
   $this->SUPER::finish();
@@ -148,6 +170,8 @@ sub renderForEdit {
 
   my $topicTitle = $this->getTopicTitle($baseWeb, $value);
   push @htmlData, 'data-value-text="'.$topicTitle.'"';
+
+  push @htmlData, 'data-multiple="1"' if $this->isMultiValued;
 
   while (my ($key, $val) = each %{$this->param()}) {
     next if $key =~ /^(web)$/;
