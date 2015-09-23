@@ -33,7 +33,7 @@ sub new {
 
     $this->{_defaultsettings}{cssClasses} = 'foswikiUserField';
     $this->{_defaultsettings}{displayTopic} = "$Foswiki::cfg{SystemWebName}.MoreFormfieldsAjaxHelper";
-    $this->{_defaultsettings}{displaySection} = "user_display";
+    $this->{_defaultsettings}{displaySection} = "select2::user::display";
     return $this;
 }
 
@@ -44,10 +44,16 @@ sub getOptions {
 
   return \@values if $raw || !@values || $values[0] !~ /^https?:\/\//;
 
-  return Foswiki::Func::getScriptUrl($Foswiki::cfg{SystemWebName}, 'MoreFormfieldsAjaxHelper', 'view',
+  my $web = $Foswiki::cfg{SystemWebName};
+  my $topic = 'MoreFormfieldsAjaxHelper';
+  my $pref = Foswiki::Func::getPreferencesValue('USERFIELDAJAXHELPER');
+  if ($pref) {
+    ($web, $topic) = Foswiki::Func::normalizeWebTopicName($Foswiki::Plugins::SESSION->{webName}, $pref);
+  }
+  return Foswiki::Func::getScriptUrl($web, $topic, 'view',
     skin => 'text',
     contenttype => 'text/plain',
-    section => 'user',
+    section => 'select2::user',
   );
 }
 
