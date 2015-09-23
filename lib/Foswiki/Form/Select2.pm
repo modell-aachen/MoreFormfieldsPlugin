@@ -152,7 +152,7 @@ sub renderForEdit {
       $choices_count++;
     }
   }
-  $size = $choices_count;
+  my $size = $choices_count;
   if ($size > $this->{maxSize}) {
     $size = $this->{maxSize};
   } elsif ($size < $this->{minSize}) {
@@ -165,7 +165,7 @@ sub renderForEdit {
     'data-width' => $this->param("width") || 'element',
     'data-allow-clear' => $this->param("allowClear") || 'false',
   };
-  $params{'data-placeholder'} = $this->param('placeholder') if defined $this->param('placeholder');
+  $params->{'data-placeholder'} = $this->param('placeholder') if defined $this->param('placeholder');
   $params->{style} = 'width: '.$this->{size}.'ex;' if $this->{size};
   if (defined $url) {
     $params->{'data-url'} = $url;
@@ -198,8 +198,8 @@ sub mapValuesToLabels {
   my ($this, @values) = @_;
 
   my $session = $Foswiki::Plugins::SESSION;
-  my $mweb;
-  ($mweb, $mtopic) = Foswiki::Func::normalizeWebTopicName(undef, $this->param('displayTopic'));
+  my ($mweb, $mtopic) = Foswiki::Func::normalizeWebTopicName(undef, $this->param('displayTopic'));
+  my $msec = $this->param('displaySection');
   my ($meta, $text) = Foswiki::Func::readTopic($mweb, $mtopic);
   return @values unless $meta && $meta->haveAccess('VIEW');
 
