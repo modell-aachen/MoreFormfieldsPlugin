@@ -18,6 +18,8 @@ package Foswiki::Form::User;
 use strict;
 use warnings;
 
+use Foswiki::Form::Select2 ();
+
 BEGIN {
     if ( $Foswiki::cfg{UseLocale} ) {
         require locale;
@@ -29,7 +31,7 @@ our @ISA = ('Foswiki::Form::Select2');
 
 sub new {
     my $class = shift;
-    my $this  = $class->SUPER::new(@_);
+    my $this = $class->SUPER::new(@_);
 
     $this->{_defaultsettings}{cssClasses} = 'foswikiUserField';
     $this->{_defaultsettings}{displayTopic} = "$Foswiki::cfg{SystemWebName}.MoreFormfieldsAjaxHelper";
