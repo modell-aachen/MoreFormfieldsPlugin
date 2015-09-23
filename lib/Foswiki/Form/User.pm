@@ -33,8 +33,15 @@ sub new {
     my $class = shift;
     my $this = $class->SUPER::new(@_);
 
+    my $web = $Foswiki::cfg{SystemWebName};
+    my $topic = 'MoreFormfieldsAjaxHelper';
+    my $pref = Foswiki::Func::getPreferencesValue('USERFIELDAJAXHELPER');
+    if ($pref) {
+      ($web, $topic) = Foswiki::Func::normalizeWebTopicName($Foswiki::Plugins::SESSION->{webName}, $pref);
+    }
+
     $this->{_defaultsettings}{cssClasses} = 'foswikiUserField';
-    $this->{_defaultsettings}{displayTopic} = "$Foswiki::cfg{SystemWebName}.MoreFormfieldsAjaxHelper";
+    $this->{_defaultsettings}{displayTopic} = "$web.$topic";
     $this->{_defaultsettings}{displaySection} = "select2::user::display";
     return $this;
 }
