@@ -208,7 +208,7 @@ sub mapValuesToLabels {
   $text =~ s/^.*%STARTSECTION\{(?:\s*name\s*=)?\s*"?$msec"?\s*\}%//s;
   $text =~ s/%(?:STOP|END)SECTION\{(?:\s*name\s*=)?\s*"?$msec"?\s*\}%.*$//s;
 
-  my @res = map { $session->{prefs}->setSessionPreferences(id => $_); $meta->expandMacros($text) } @$values;
+  my @res = map { $session->{prefs}->setSessionPreferences(id => $_); $meta->expandMacros($text) } @values;
   $session->{prefs}->popTopicContext();
   @res;
 }
