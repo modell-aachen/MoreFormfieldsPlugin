@@ -161,7 +161,6 @@ sub renderForEdit {
   my $params = {
     class => $this->cssClasses('foswikiSelect2Field'),
     name => $this->{name},
-    size => $this->{size},
     'data-width' => $this->param("width") || 'element',
     'data-allow-clear' => $this->param("allowClear") || 'false',
   };
@@ -173,9 +172,8 @@ sub renderForEdit {
     $params->{'data-ajaxpassfields'} = $apf if $apf;
     my $resf = $this->param('resultsFilter');
     $params->{'data-resultsfilter'} = $resf if $resf;
-    $params->{value} = $value;
   }
-  $params->{'multiple'} = 'multiple';
+  $params->{'multiple'} = 'multiple' if $this->isMultiValued;
   $value = _maketag('select', $params, $choices);
 
   $this->addJavascript();

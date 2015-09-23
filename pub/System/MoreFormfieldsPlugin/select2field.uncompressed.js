@@ -71,14 +71,12 @@ jQuery(function($) {
       select2opts.ajax = {
         url: opts.url,
         dataType: 'json',
-        data: function(term, page) {
-          var params =
-            $.extend(makeParams(), {
-              q: term, // search term
-              limit: 10,
-              page: page
-            }, requestOpts);
-          return params;
+        data: function(params) {
+          return $.extend(makeParams(), {
+            q: params.term, // search term
+            limit: 10,
+            page: params.page
+          }, requestOpts);
         },
         results: function(data, page) {
           data.more = (page * (requestOpts.limit || 10)) < data.total;
