@@ -113,7 +113,7 @@ jQuery(function($) {
           fail(function() {
             if (opts.multiple || $e.attr('multiple')) {
               var vals = $e.val().split(/\s*,\s*/);
-              callback($.map(vals, function() { return {id: this, text: this}; }));
+              callback($.map(vals, function(v) { return {id: v, text: v}; }));
             } else {
               callback({id: $e.val(), text: $e.val()});
             }
@@ -121,7 +121,7 @@ jQuery(function($) {
         } else {
           if (opts.multiple || $e.attr('multiple')) {
             var vals = $e.val().split(/\s*,\s*/);
-            callback($.map(vals, function() { return {id: this, text: this}; }));
+            callback($.map(vals, function(v) { return {id: v, text: v}; }));
           } else {
             callback({id: $e.val(), text: $e.val()});
           }
