@@ -35,17 +35,30 @@ BEGIN {
 
 sub getOptions {
   my $this = shift;
-  my $raw = shift;
+  my $options = $this->_options_raw;
+  return $this->_options_query if $this->isAJAX;
+  return $options;
+}
 
+sub isAJAX {
+  my $this = shift;
+  my $options = $this->_options_raw;
+  return $options->[0] if @$options && $options->[0] =~ m#^https?://#;
+}
+
+sub _options_raw {
+  my $this = shift;
+  $this->{_rawoptions} = $this->SUPER::getOptions unless defined $this->{_rawoptions};
+  return $this->{_rawoptions};
+}
+
+sub _options_query {
+  my $this = shift;
   my $query = Foswiki::Func::getCgiQuery();
-
-  my @values = @{$this->SUPER::getOptions()};
-
-  return \@values if $raw || !@values || $values[0] !~ /^https?:\/\//;
+  my @valuesFromQuery = $query->param( $this->{name} );
 
   # For AJAX-based values, just take whatever we get via query
-  @values = ();
-  my @valuesFromQuery = $query->param( $this->{name} );
+  my @values = ();
   foreach my $item (@valuesFromQuery) {
 
     # Item10889: Coming from an "Warning! Confirmation required", often
@@ -56,7 +69,7 @@ sub getOptions {
       }
     }
   }
-  return \@values;
+  \@values;
 }
 
 sub getDefaultValue {
@@ -112,12 +125,12 @@ sub renderForEdit {
   my $choices_count = 0;
 
   $value = '' unless defined $value;
+  $value =~ s/(?:^\s+|\s+$)//;
   my %isSelected = map { $_ => 1 } split(/\s*,\s*/, $value);
-  my @options = @{$this->getOptions(1)};
+  my @options = @{$this->SUPER::getOptions};
 
   my $url;
-  if (@options && $options[0] =~ /^https?:\/\//) {
-    $url = $options[0];
+  if ($url = $this->isAJAX) {
 
     my @values = grep { defined $_ && /\S/ } split(/\s*,\s*/, $value);
     my @labels;
@@ -126,6 +139,7 @@ sub renderForEdit {
     }
     while (my $v = shift @values) {
       my %params;
+      $params{selected} = 'selected' if $isSelected{$v};
       my $label = $v;
       if (@labels) {
         $params{value} = $v;
@@ -136,7 +150,7 @@ sub renderForEdit {
       $choices_count++;
     }
   } else {
-    foreach my $item (@options) {
+    foreach my $item ($this->_options_raw) {
       my $option = $item;    # Item9647: make a copy not to modify the original value in the array
       my %params;
       $params{selected} = 'selected' if $isSelected{$option};
@@ -216,9 +230,7 @@ sub getDisplayValue {
 
   return '' unless defined $value && $value ne '';
 
-  my @options = @{$this->getOptions($value)};
-
-  if ($options[0] =~ /https?:\/\//) {
+  if ($this->isAJAX) {
     if (my $mtopic = $this->param('displayTopic') and my $msec = $this->param('displaySection')) {
       my @v = $value;
       if ($this->isMultiValued()) {

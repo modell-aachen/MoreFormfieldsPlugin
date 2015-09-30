@@ -46,7 +46,7 @@ sub new {
     return $this;
 }
 
-sub getOptions {
+sub _options_raw {
   my $this = shift;
   my $raw = shift;
 
