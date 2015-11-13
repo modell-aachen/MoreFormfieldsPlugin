@@ -188,10 +188,15 @@ sub renderForEdit {
     $params->{'data-resultsfilter'} = $resf if $resf;
   }
   $params->{'multiple'} = 'multiple' if $this->isMultiValued;
-  $value = _maketag('select', $params, $choices);
+  $value =
+    _maketag('input', {
+      type => 'hidden',
+      name => "_$this->{name}_present",
+      value => '1',
+    }) .
+    _maketag('select', $params, $choices);
 
   $this->addJavascript();
-
   return ('', $value);
 }
 
@@ -257,6 +262,29 @@ sub addJavascript {
   Foswiki::Func::addToZone("script", "FOSWIKI::SELECT2FIELD", <<"HERE", "JQUERYPLUGIN::SELECT2");
 <script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MoreFormfieldsPlugin/select2field.js?v=$Foswiki::Plugins::MoreFormfieldsPlugin::RELEASE'></script>
 HERE
+}
+
+# Terrible workaround to allow submitting empty +multi
+sub populateMetaFromQueryData {
+  my $this = shift;
+  my ($query, $meta, $old) = @_;
+  if ($this->isMultiValued && scalar $query->multi_param("_$this->{name}_present") && !scalar $query->multi_param($this->{name})) {
+    return (0, 1) if ($this->isMandatory);
+
+    # reconstruct title, see original method
+    my $title = $this->{title};
+    if ($this->{definingTopic}) {
+      $title = "[[$this->{definingTopic}][$title]]";
+    }
+    $meta->putKeyed('FIELD', {
+        name => $this->{name},
+        title => $title,
+        value => '',
+    });
+
+    return (1, 1);
+  }
+  return $this->SUPER::populateMetaFromQueryData(@_);
 }
 
 1;
