@@ -150,7 +150,7 @@ sub renderForEdit {
       $choices_count++;
     }
   } else {
-    foreach my $item ($this->_options_raw) {
+    foreach my $item (@{$this->_options_raw}) {
       my $option = $item;    # Item9647: make a copy not to modify the original value in the array
       my %params;
       $params{selected} = 'selected' if $isSelected{$option};
