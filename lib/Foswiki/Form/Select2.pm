@@ -194,7 +194,7 @@ sub renderForEdit {
       name => "_$this->{name}_present",
       value => '1',
     }) .
-    _maketag('select', $params, $choices);
+    _maketag('select', $params, $choices, 1);
 
   $this->addJavascript();
   return ('', $value);
