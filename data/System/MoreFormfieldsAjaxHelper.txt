@@ -50,6 +50,7 @@
   format="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
   fields="wikiName,displayName"
   limit="20"
+  sort="asc"
 }%]}</literal>%ENDSECTION{"select2::user"}%
 %STARTSECTION{"select2::user::display"}%%RENDERUSER{
   "%id%"

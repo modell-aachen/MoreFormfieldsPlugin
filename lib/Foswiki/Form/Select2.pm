@@ -207,6 +207,7 @@ sub renderForDisplay {
   my $displayValue = $this->getDisplayValue($value);
   $format =~ s/\$value\(display\)/$displayValue/g;
   $format =~ s/\$value/$value/g;
+  $format =~ s/\$edit\b/$this->renderForEdit($attrs->{meta}, $attrs->{origValue})/eg if $attrs->{meta} && defined $attrs->{origValue};
 
   return $this->SUPER::renderForDisplay($format, $value, $attrs);
 }
