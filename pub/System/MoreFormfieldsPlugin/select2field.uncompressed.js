@@ -48,6 +48,13 @@ jQuery(function($) {
       multiple: opts.multiple,
       allowClear: !!(opts.allowClear)
     };
+    if(opts.placeholder !== undefined && opts.placeholder !== false) {
+        var id = (opts.placeholdervalue !== 'undefined' && opts.placeholdervalue !== false) ? opts.placeholdervalue : '';
+
+        select2opts.placeholder = { id: id, text: opts.placeholder };
+
+        $this.prepend($('<option></option>').val(id).text(opts.placeholder));
+    }
     if (opts.url) {
       var makeParams = function() {
         if (!opts.ajaxpassfields) {

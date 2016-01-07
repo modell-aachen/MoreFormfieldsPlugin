@@ -185,6 +185,7 @@ sub renderForEdit {
     'data-allow-clear' => $this->param("allowClear") || 'false',
   };
   $params->{'data-placeholder'} = $this->param('placeholder') if defined $this->param('placeholder');
+  $params->{'data-placeholdervalue'} = $this->param('placeholderValue') if defined $this->param('placeholderValue');
   $params->{style} = 'width: '.$this->{size}.'ex;' if $this->{size};
   if (defined $url) {
     $params->{'data-url'} = $url;
