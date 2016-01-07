@@ -89,7 +89,7 @@ sub param {
     $form->getPreference; # make sure it's cached
     for my $key ($form->{_preferences}->prefs) {
         next unless $key =~ /^\Q$this->{name}\E_s2_(\w+)$/;
-        $this->{_params}{$1} = $form->getPreference($key);
+        $this->{_params}{$1} = $form->expandMacros($form->getPreference($key));
     }
   }
 
