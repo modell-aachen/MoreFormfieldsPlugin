@@ -85,6 +85,12 @@ sub param {
     my $form = Foswiki::Form->new($Foswiki::Plugins::SESSION, $web, $topic);
     my %params = Foswiki::Func::extractParameters($form->expandMacros($this->{attributes}));
     $this->{_params} = \%params;
+
+    $form->getPreference; # make sure it's cached
+    for my $key ($form->{_preferences}->prefs) {
+        next unless $key =~ /^\Q$this->{name}\E_s2_(\w+)$/;
+        $this->{_params}{$1} = $form->getPreference($key);
+    }
   }
 
   if (defined $key) {
