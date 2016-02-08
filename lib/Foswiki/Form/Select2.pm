@@ -85,6 +85,12 @@ sub param {
     my $form = Foswiki::Form->new($Foswiki::Plugins::SESSION, $web, $topic);
     my %params = Foswiki::Func::extractParameters($form->expandMacros($this->{attributes}));
     $this->{_params} = \%params;
+
+    $form->getPreference; # make sure it's cached
+    for my $key ($form->{_preferences}->prefs) {
+        next unless $key =~ /^\Q$this->{name}\E_s2_(\w+)$/;
+        $this->{_params}{$1} = $form->expandMacros($form->getPreference($key));
+    }
   }
 
   if (defined $key) {
@@ -179,6 +185,7 @@ sub renderForEdit {
     'data-allow-clear' => $this->param("allowClear") || 'false',
   };
   $params->{'data-placeholder'} = $this->param('placeholder') if defined $this->param('placeholder');
+  $params->{'data-placeholdervalue'} = $this->param('placeholderValue') if defined $this->param('placeholderValue');
   $params->{style} = 'width: '.$this->{size}.'ex;' if $this->{size};
   if (defined $url) {
     $params->{'data-url'} = $url;
