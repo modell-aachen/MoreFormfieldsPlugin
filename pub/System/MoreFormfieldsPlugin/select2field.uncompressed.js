@@ -99,7 +99,7 @@ jQuery(function($) {
             opts.initurl = p.SCRIPTURL +'/rest'+ p.SCRIPTSUFFIX +'/RenderPlugin/tag?name=INCLUDE;param='+
               opts.mappertopic +';section='+ opts.mappersection;
           }
-          $.ajax(opts.initurl +';id='+ $e.val(), {
+          $.ajax(opts.initurl +';id='+ encodeURIComponent($e.val()), {
             dataType: 'json'
           }).
           then(function(data, textStatus, xhr) {
