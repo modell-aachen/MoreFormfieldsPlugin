@@ -58,3 +58,19 @@
   format="$displayName"
 }%%ENDSECTION{"select2::user::display"}%
 </verbatim>
+<verbatim class="tml">
+%STARTSECTION{"select2::usergroup"}%<literal>{"results":[%QUERYUSERS{
+  urlparam="q"
+  type="any"
+  userformat="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
+  groupformat="{\"id\":\"$json:cUID\",\"text\":\"$json:cUID\"}"
+  fields="wikiName,displayName"
+  limit="20"
+}%]}</literal>%ENDSECTION{"select2::usergroup"}%
+%STARTSECTION{"select2::usergroup::display"}%%RENDERUSER{
+  "%id%"
+  type="any"
+  format="$displayName"
+  groupformat="$cUID"
+}%%ENDSECTION{"select2::usergroup::display"}%
+</verbatim>

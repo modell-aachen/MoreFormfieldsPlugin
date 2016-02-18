@@ -16,7 +16,7 @@ These are:
       * =default=: the default value to use if no value exists yet
       * =url=: URL for autocomplete, default: =%SCRIPTURL{view}%/%SYSTEMWEB%/MoreFormfieldsAjaxHelper?section&#61;select2::topic;skin&#61;text;contenttype&#61;application/json%3Bcharset%3Dutf-8=
       * ... and any select2 option
-   * =user=: user autocomplete. You can use a '+multi' suffix to enable selecting multiple users. In addition, all of the parameters of =select2= below are available, though it's probably not a good idea to override the =displayTopic= or =displaySection=.
+   * =user=: user autocomplete. You can use a '+multi' suffix to enable selecting multiple users and a '+group' suffix to also find usergroups. In addition, all of the parameters of =select2= below are available, though it's probably not a good idea to override the =displayTopic= or =displaySection=.
    * =select2=: Select2 widget with pre-defined available values (or an arbitrary AJAX helper). Parameters work the same way as for =topic=, but in the 'attributes' column. Be careful to not accidentally use a capital 'H' or 'M' in any parameter because otherwise the field will be interpreted as hidden or mandatory. Alternatively, you can supply parameters as preferences in the form topic. For example, for a field called 'Foo', you can set the 'width' option using the preference name =Foo_s2_width=.
       * In the values column, just like in the =textboxlist= widget, put a URL to use it as an AJAX helper, or a comma-separated list of values just like for a normal select. (For select2+values you can use a list of mapped values as for select+values.)
       * =placeholder=: string to show when no value has been selected.
