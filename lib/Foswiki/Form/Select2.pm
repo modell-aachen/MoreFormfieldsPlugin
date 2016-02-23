@@ -195,6 +195,7 @@ sub renderForEdit {
     $params->{'data-resultsfilter'} = $resf if $resf;
   }
   $params->{'multiple'} = 'multiple' if $this->isMultiValued;
+  $params->{'data-limit'} = $this->param('limit') if defined $this->param('limit');
   $value =
     _maketag('input', {
       type => 'hidden',

@@ -2,7 +2,8 @@ jQuery(function($) {
   var defaults = {
     minimumInputLength: 0,
     width: 'resolve',
-    quietMillis:500
+    quietMillis:500,
+    limit: '10'
   };
 
   $(".foswikiSelect2Field:not(.foswikiSelect2FieldInited)").livequery(function() {
@@ -81,7 +82,6 @@ jQuery(function($) {
         data: function(params) {
           return $.extend(makeParams(), {
             q: params.term, // search term
-            limit: 10,
             page: params.page
           }, requestOpts);
         },
