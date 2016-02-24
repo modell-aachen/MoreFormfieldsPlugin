@@ -22,6 +22,15 @@ jQuery(function($) {
     delete requestOpts.allowClear;
     delete requestOpts.resultsfilter;
 
+    // jqselect2 will fail if limit is too small.
+    if(requestOpts.limit < 8) requestOpts.limit = 8;
+
+    // See if there is a limit in the url
+    if(opts.url) {
+        var m = /[;&]limit=(\d*)/.exec(opts.url);
+        if(m) requestOpts.limit = m[1];
+    }
+
     if (opts.ajaxpassfields) {
       var form = $this.closest('form');
       var apf = opts.ajaxpassfields;
@@ -80,13 +89,19 @@ jQuery(function($) {
         url: opts.url,
         dataType: 'json',
         data: function(params) {
-          return $.extend(makeParams(), {
+          $.extend(params, makeParams(), {
             q: params.term, // search term
-            page: params.page
           }, requestOpts);
+          params.page = params.page || 0;
+          params.start = params.limit * params.page;
+          return params;
         },
-        results: function(data, page) {
-          data.more = (page * (requestOpts.limit || 10)) < data.total;
+        processResults: function(data, params) {
+          params.page = params.page || 0;
+          if(data.total) {
+              data.more = ((params.page + 1) * params.limit) < data.total;
+              data.pagination = { more: data.more };
+          }
           if (opts.resultsfilter) {
             data = window[opts.resultsfilter](data);
           }
