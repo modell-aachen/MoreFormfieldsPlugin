@@ -42,7 +42,9 @@ sub new {
 
     $this->{_defaultsettings}{cssClasses} = 'foswikiUserField';
     $this->{_defaultsettings}{displayTopic} = "$web.$topic";
-    $this->{_defaultsettings}{displaySection} = "select2::user::display";
+    my $section = "select2::user::display";
+    $section = "select2::usergroup::display" if $this->{type} =~ /\+group\b/;
+    $this->{_defaultsettings}{displaySection} = $section;
     return $this;
 }
 
@@ -53,13 +55,15 @@ sub _options_raw {
   my $web = $Foswiki::cfg{SystemWebName};
   my $topic = 'MoreFormfieldsAjaxHelper';
   my $pref = Foswiki::Func::getPreferencesValue('USERFIELDAJAXHELPER');
+  my $section = "select2::user";
+  $section = "select2::usergroup" if $this->{type} =~ /\+group\b/;
   if ($pref) {
     ($web, $topic) = Foswiki::Func::normalizeWebTopicName($Foswiki::Plugins::SESSION->{webName}, $pref);
   }
   return [Foswiki::Func::getScriptUrl($web, $topic, 'view',
     skin => 'text',
     contenttype => 'text/plain',
-    section => 'select2::user',
+    section => $section,
   )];
 }
 
