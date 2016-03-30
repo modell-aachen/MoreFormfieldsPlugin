@@ -44,6 +44,7 @@ sub new {
     $this->{_defaultsettings}{displayTopic} = "$web.$topic";
     my $section = "select2::user::display";
     $section = "select2::usergroup::display" if $this->{type} =~ /\+group\b/;
+    $section = "select2::user::display" if $this->{attributes} =~ /ingroup=\"(.*)\"/;
     $this->{_defaultsettings}{displaySection} = $section;
     return $this;
 }
@@ -57,6 +58,12 @@ sub _options_raw {
   my $pref = Foswiki::Func::getPreferencesValue('USERFIELDAJAXHELPER');
   my $section = "select2::user";
   $section = "select2::usergroup" if $this->{type} =~ /\+group\b/;
+  my $ingroup;
+  if($this->{attributes} =~ /ingroup=\"(.*)\"/){
+    $ingroup = $1;
+    $section = "select2::user::ingroup";
+  }
+
   if ($pref) {
     ($web, $topic) = Foswiki::Func::normalizeWebTopicName($Foswiki::Plugins::SESSION->{webName}, $pref);
   }
@@ -64,6 +71,7 @@ sub _options_raw {
     skin => 'text',
     contenttype => 'text/plain',
     section => $section,
+    ingroup => $ingroup,
   )];
 }
 
