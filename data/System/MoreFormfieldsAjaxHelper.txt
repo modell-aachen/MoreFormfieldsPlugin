@@ -74,3 +74,13 @@
   groupformat="$cUID"
 }%%ENDSECTION{"select2::usergroup::display"}%
 </verbatim>
+<verbatim class="tml">
+%STARTSECTION{"select2::user::ingroup"}%<literal>{"results":[%QUERYUSERS{
+  urlparam="q"
+  type="user"
+  ingroup="%URLPARAM{"ingroup"}%"
+  userformat="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
+  fields="wikiName,displayName"
+  limit="20"
+}%]}</literal>%ENDSECTION{"select2::user::ingroup"}%
+</verbatim>

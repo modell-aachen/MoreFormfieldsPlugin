@@ -230,6 +230,14 @@ sub mapValuesToLabels {
   return @values unless $meta && $meta->haveAccess('VIEW');
 
   $session->{prefs}->pushTopicContext($mweb, $mtopic);
+  if ($this->param('displayParams')) {
+    for my $var (split /,/, $this->param('displayParams')) {
+      $var =~ s/(?:^\s*|\s*$)//g;
+      next unless $var;
+      my ($k, $v) = split(/\s*=\s*/, $var, 2);
+      Foswiki::Func::setPreferencesValue($k, $v);
+    }
+  }
 
   $text =~ s/^.*%STARTSECTION\{(?:\s*name\s*=)?\s*"?$msec"?\s*\}%//s;
   $text =~ s/%(?:STOP|END)SECTION\{(?:\s*name\s*=)?\s*"?$msec"?\s*\}%.*$//s;
