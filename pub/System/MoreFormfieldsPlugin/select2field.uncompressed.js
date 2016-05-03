@@ -100,7 +100,8 @@ jQuery(function($) {
               opts.mappertopic +';section='+ opts.mappersection;
           }
           $.ajax(opts.initurl +';id='+ encodeURIComponent($e.val()), {
-            dataType: 'json'
+            dataType: 'json',
+            cache: false
           }).
           then(function(data, textStatus, xhr) {
             if (!opts.multiple && data instanceof Array) {
