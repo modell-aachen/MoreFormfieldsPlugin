@@ -130,7 +130,7 @@ jQuery(function($) {
       return $e;
     };
     select2opts.templateSelection = function(d) {
-      return $('<div class="topicselect_label"></div>').text(d.label || d.text);
+      return $('<span class="select_label"></span>').text(d.label || d.text);
     };
     select2opts.formatSelection = function(object, container) {
       return object.textSelected || object.text;
