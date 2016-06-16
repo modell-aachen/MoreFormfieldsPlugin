@@ -108,10 +108,33 @@ jQuery(function($) {
           return data;
         }
       };
-      select2opts.formatSelection = function(object, container) {
-        return object.textSelected || object.text;
-      };
     }
+    select2opts.templateResult = function(d) {
+      if (d instanceof jQuery) { return d; }
+      if (d.loading) {
+        return $('<div class="jqAjaxLoader" style="padding-left: 20px;">').text(foswiki.getMetaTag('l10n_modac_selecttopic_searching'));
+      }
+      var $e = $('<div class="topicselect_container"><div class="topicselect_label"></div><div class="topicselect_sublabel"></div></div>');
+      $e.find('.topicselect_label').text(d.label || d.text);
+      $e.find('.topicselect_sublabel').text(d.sublabel);
+      $(d.labeltag).each(function(idx, item) {
+        if(!item.text) return;
+        $('<span></span>').text(item.text).addClass('select2_labeltag').addClass(item.class).prependTo($e.find('.topicselect_label'));
+      });
+      if(d.labelamend) {
+        $e.find('.topicselect_label').append($('<span></span>').addClass('topicselect_amend').text(d.labelamend));
+      }
+      if(d.class) {
+          $e.addClass(d.class);
+      }
+      return $e;
+    };
+    select2opts.templateSelection = function(d) {
+      return $('<span class="select_label"></span>').text(d.label || d.text);
+    };
+    select2opts.formatSelection = function(object, container) {
+      return object.textSelected || object.text;
+    };
     $this.select2(select2opts);
   });
 
