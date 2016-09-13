@@ -74,7 +74,7 @@ sub _options_query {
 
 sub getDefaultValue {
   my $this = shift;
-  $this->param('defaultValue') || '';
+  $this->{default} || $this->param('defaultValue') || '';
 }
 
 sub param {
