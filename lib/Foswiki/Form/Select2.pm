@@ -196,7 +196,6 @@ sub renderForEdit {
   }
   $params->{'multiple'} = 'multiple' if $this->isMultiValued;
   $params->{'data-limit'} = $this->param('limit') if defined $this->param('limit');
-  $params->{'data-tags'} = $this->param('tagging') if defined $this->param('tagging');
   $value =
     _maketag('input', {
       type => 'hidden',
