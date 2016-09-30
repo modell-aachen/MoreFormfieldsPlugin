@@ -29,6 +29,7 @@ These are:
       * =ajaxPassFields=: comma-separated list of =key:value= pairs; =value= is the name of a form field (or, if it is prefixed with a '=' sign, a literal string to be passed) and =key= is the name of the GET parameter in which the AJAX helper will receive the current value of that form field. This allows for AJAX queries parameterized on other form fields.
       * =resultsFilter=: if set, used as the name of a method in the =window= object (i.e. <code>window.myfunc = function(...){}</code>) that is called on results returned by the AJAX endpoint. The function is passed the data object and should return the new data object.
       * =limit=: if set, the value of this parameter is passed to the AJAX call. Default is 10.
+      * =tagging=: if set to true, tagging is enabeld in Select2.
    * =firstallcheckbox=: behaves just like the normal checkbox type, but the first checkbox in the list is assumed to have a special meaning: its value is taken to mean "all options". Therefore, checking the first box will automatically uncheck all others, and checking any other box will uncheck the first. Add '+last' to the type to make the last checkbox special instead. The '+buttons' subtype normally available for 'checkbox' is not supported.
    * =autofill=
    * =phonenumber=
