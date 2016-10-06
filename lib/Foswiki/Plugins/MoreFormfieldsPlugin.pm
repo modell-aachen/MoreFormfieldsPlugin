@@ -23,6 +23,8 @@ use Foswiki::Form ();
 use Foswiki::OopsException ();
 use Foswiki::Plugins ();
 
+use JSON;
+
 use Error qw(:try);
 
 our $VERSION = '0.01';
@@ -32,12 +34,18 @@ our $NO_PREFS_IN_TOPIC = 1;
 
 
 sub initPlugin {
+  Foswiki::Func::registerRESTHandler( 'tags',
+                                      \&_restTags,
+                                      authenticate => 0,
+                                      validate => 0,
+                                      http_allow => 'GET'
+                                      );
   return 1;
 }
 
 sub beforeSaveHandler {
   my ($text, $topic, $web, $meta) = @_;
-  
+
   my $form = $meta->get("FORM");
   return unless $form;
 
@@ -60,6 +68,51 @@ sub beforeSaveHandler {
       $field->beforeSaveHandler($meta, $form);
     }
   }
+}
+
+sub _restTags {
+  my $session = shift;
+  my $json = JSON->new->utf8;
+  my $requestObject = Foswiki::Func::getRequestObject();
+  my $q = $requestObject->param('q');
+  my $tagField = $requestObject->param('tagField');
+  my $term = $requestObject->param('term');
+  my $start = $requestObject->param('start');
+  my $limit = $requestObject->param('limit');
+
+
+  my $tagFieldFormName = 'field_'.$tagField.'_lst';
+  my %search = (
+      q => $q,
+      start => 0,
+      rows => 0,
+      facet => 'true',
+      'facet.field' => [$tagFieldFormName],
+      'facet.contains' => $term,
+      'facet.contains.ignoreCase' => 'true',
+      'facet.sort' => 'count',
+      'facet.limit' => $limit,
+      'facet.offset' => $start
+  );
+
+  my $searcher = Foswiki::Plugins::SolrPlugin::getSearcher($session);
+  my $results = $searcher->solrSearch(undef, \%search);
+  my $content = $results->raw_response;
+
+  my $result = {
+    results => []
+  };
+  $content = $json->decode($content->{_content});
+  my @facets = @{$content->{facet_counts}->{facet_fields}->{$tagFieldFormName}};
+  for(my $i=0; $i < scalar @facets; $i = $i + 2){
+    my $facet = {
+      id => $facets[$i],
+      text => $facets[$i],
+      sublabel => "($facets[$i+1])"
+    };
+    push(@{$result->{results}}, $facet);
+  }
+  return to_json($result);
 }
 
 1;
