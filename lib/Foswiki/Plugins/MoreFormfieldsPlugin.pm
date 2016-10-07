@@ -76,9 +76,9 @@ sub _restTags {
   my $requestObject = Foswiki::Func::getRequestObject();
   my $q = $requestObject->param('q');
   my $tagField = $requestObject->param('tagField');
-  my $term = $requestObject->param('term');
-  my $start = $requestObject->param('start');
-  my $limit = $requestObject->param('limit');
+  my $term = $requestObject->param('term') || '';
+  my $start = $requestObject->param('start') || 0;
+  my $limit = $requestObject->param('limit') || 10;
 
 
   my $tagFieldFormName = 'field_'.$tagField.'_lst';

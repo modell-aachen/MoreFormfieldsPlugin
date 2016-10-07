@@ -43,6 +43,17 @@ These are:
 | Netmask | netmask |  15  | | netmask |  |
 | <nop>MacAddress | macaddress |  17  | | hardware-addresse | |
 
+---++ Creating a Tag-Formfield
+To create a Formfield used for tagging just use a select2+multi field with the tagging option set to true. Then in the values row put in the URL to the tags REST handler with appropriate parameters. Example:
+
+<verbatim>
+%SCRIPTURL{"rest"}%/MoreFormfieldsPlugin/tags?q=form:Processes.DocumentForm&tagField=Tags
+</verbatim>
+
+The following two parameters need to be set.
+   * q: This should be a query which defines in which forms to look for tags.
+   * tagField: This defines the name of the tag Formfield in the queried data forms.
+
 ---++ Installation Instructions
 
 %$INSTALL_INSTRUCTIONS%
