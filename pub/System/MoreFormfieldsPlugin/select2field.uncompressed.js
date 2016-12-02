@@ -3,7 +3,8 @@ jQuery(function($) {
     minimumInputLength: 0,
     width: 'resolve',
     quietMillis:500,
-    limit: '10'
+    limit: '10',
+    delay: 300
   };
 
   $(".foswikiSelect2Field:not(.foswikiSelect2FieldInited)").livequery(function() {
@@ -56,7 +57,8 @@ jQuery(function($) {
       minimumInputLength: opts.minimumInputLength,
       width: opts.width,
       multiple: opts.multiple,
-      allowClear: !!(opts.allowClear)
+      allowClear: !!(opts.allowClear),
+      delay: opts.delay || 0
     };
     if(opts.placeholder !== undefined && opts.placeholder !== false) {
         var id = (opts.placeholdervalue !== 'undefined' && opts.placeholdervalue !== false) ? opts.placeholdervalue : '';
@@ -96,6 +98,7 @@ jQuery(function($) {
           params.start = params.limit * params.page;
           return params;
         },
+        delay: select2opts.delay,
         processResults: function(data, params) {
           params.page = params.page || 0;
           if(data.total) {
