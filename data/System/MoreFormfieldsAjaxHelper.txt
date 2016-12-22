@@ -48,7 +48,7 @@
 %STARTSECTION{"select2::user"}%<literal>{%IF{"context UnifiedAuthPluginEnabled" then="\"total\": %TOTALUSERS%,"}% "results":[%QUERYUSERS{
   urlparam="q"
   format="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
-  fields="wikiName,displayName"
+  fields="%QUERYUSERS_DEFAULT_FIELDS%"
   limit="20"
   sort="asc"
 }%]}</literal>%ENDSECTION{"select2::user"}%
@@ -64,7 +64,7 @@
   type="any"
   userformat="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
   groupformat="{\"id\":\"$json:cUID\",\"text\":\"$json:cUID\"}"
-  fields="wikiName,displayName"
+  fields="%QUERYUSERS_DEFAULT_FIELDS%"
   limit="20"
 }%]}</literal>%ENDSECTION{"select2::usergroup"}%
 %STARTSECTION{"select2::usergroup::display"}%%RENDERUSER{
@@ -80,7 +80,7 @@
   type="user"
   ingroup="%URLPARAM{"ingroup"}%"
   userformat="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
-  fields="wikiName,displayName"
+  fields="%QUERYUSERS_DEFAULT_FIELDS%"
   limit="20"
 }%]}</literal>%ENDSECTION{"select2::user::ingroup"}%
 </verbatim>
