@@ -45,7 +45,7 @@
 
 ---++ user field backend
 <verbatim class="tml">
-%STARTSECTION{"select2::user"}%<literal>{"results":[%QUERYUSERS{
+%STARTSECTION{"select2::user"}%<literal>{%IF{"context UnifiedAuthPluginEnabled" then="\"total\": %TOTALUSERS%,"}% "results":[%QUERYUSERS{
   urlparam="q"
   format="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
   fields="wikiName,displayName"
