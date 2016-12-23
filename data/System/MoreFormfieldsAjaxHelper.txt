@@ -48,8 +48,6 @@
 %STARTSECTION{"select2::user"}%<literal>{%QUERYUSERS{
   header="\"total\":\"$count\",\"results\":["
   footer="]"
-basemapping="yesplease"
-type="any"
   urlparam="q"
   format="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
   fields="%QUERYUSERS_DEFAULT_FIELDS%"
