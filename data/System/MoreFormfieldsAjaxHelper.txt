@@ -63,7 +63,7 @@
   urlparam="q"
   type="any"
   userformat="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
-  groupformat="{\"id\":\"$json:cUID\",\"text\":\"$json:cUID\"}"
+  groupformat="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
   fields="wikiName,displayName"
   limit="20"
 }%]}</literal>%ENDSECTION{"select2::usergroup"}%
