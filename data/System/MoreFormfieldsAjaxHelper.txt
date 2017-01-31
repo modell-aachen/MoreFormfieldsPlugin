@@ -45,13 +45,15 @@
 
 ---++ user field backend
 <verbatim class="tml">
-%STARTSECTION{"select2::user"}%<literal>{"results":[%QUERYUSERS{
+%STARTSECTION{"select2::user"}%<literal>{%QUERYUSERS{
+  header="\"total\":\"$count\",\"results\":["
+  footer="]"
   urlparam="q"
   format="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
-  fields="wikiName,displayName"
+  fields="%QUERYUSERS_DEFAULT_FIELDS%"
   limit="20"
   sort="asc"
-}%]}</literal>%ENDSECTION{"select2::user"}%
+}%}</literal>%ENDSECTION{"select2::user"}%
 %STARTSECTION{"select2::user::display"}%%RENDERUSER{
   "%id%"
   type="user"
@@ -64,7 +66,7 @@
   type="any"
   userformat="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
   groupformat="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
-  fields="wikiName,displayName"
+  fields="%QUERYUSERS_DEFAULT_FIELDS%"
   limit="20"
 }%]}</literal>%ENDSECTION{"select2::usergroup"}%
 %STARTSECTION{"select2::usergroup::display"}%%RENDERUSER{
@@ -80,7 +82,7 @@
   type="user"
   ingroup="%URLPARAM{"ingroup"}%"
   userformat="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
-  fields="wikiName,displayName"
+  fields="%QUERYUSERS_DEFAULT_FIELDS%"
   limit="20"
 }%]}</literal>%ENDSECTION{"select2::user::ingroup"}%
 </verbatim>
