@@ -42,10 +42,7 @@ sub new {
 
     $this->{_defaultsettings}{cssClasses} = 'foswikiUserField';
     $this->{_defaultsettings}{displayTopic} = "$web.$topic";
-    my $section = "select2::user::display";
-    $section = "select2::usergroup::display" if $this->{type} =~ /\+group\b/;
-    $section = "select2::user::display" if $this->{attributes} =~ /ingroup=\"(.*)\"/;
-    $this->{_defaultsettings}{displaySection} = $section;
+    $this->{_defaultsettings}{displaySection} = "select2::usergroup::display";
     return $this;
 }
 
@@ -57,12 +54,8 @@ sub _options_raw {
   my $topic = 'MoreFormfieldsAjaxHelper';
   my $pref = Foswiki::Func::getPreferencesValue('USERFIELDAJAXHELPER');
   my $section = "select2::user";
-  $section = "select2::usergroup" if $this->{type} =~ /\+group\b/;
-  my $ingroup;
-  if($this->{attributes} =~ /ingroup=\"(.*)\"/){
-    $ingroup = $1;
-    $section = "select2::user::ingroup";
-  }
+  my $type = ($this->{type} =~ m/\+group\b/) ? 'any' : 'user';
+  my $ingroup = $this->param('ingroup') || '';
 
   if ($pref) {
     ($web, $topic) = Foswiki::Func::normalizeWebTopicName($Foswiki::Plugins::SESSION->{webName}, $pref);
@@ -70,8 +63,9 @@ sub _options_raw {
   return [Foswiki::Func::getScriptUrl($web, $topic, 'view',
     skin => 'text',
     contenttype => 'text/plain',
-    section => $section,
+    section => "select2::usergroup",
     ingroup => $ingroup,
+    type => $type,
   )];
 }
 

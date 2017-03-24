@@ -44,43 +44,27 @@
 </verbatim>
 
 ---++ user field backend
+
 <verbatim class="tml">
-%STARTSECTION{"select2::user"}%<literal>{"results":[%QUERYUSERS{
-  urlparam="q"
-  format="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
-  fields="wikiName,displayName"
-  limit="20"
-  sort="asc"
-}%]}</literal>%ENDSECTION{"select2::user"}%
-%STARTSECTION{"select2::user::display"}%%RENDERUSER{
-  "%id%"
-  type="user"
-  format="$displayName"
-}%%ENDSECTION{"select2::user::display"}%
-</verbatim>
-<verbatim class="tml">
-%STARTSECTION{"select2::usergroup"}%<literal>{"results":[%QUERYUSERS{
-  urlparam="q"
-  type="any"
-  userformat="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
-  groupformat="{\"id\":\"$json:cUID\",\"text\":\"$json:cUID\"}"
-  fields="wikiName,displayName"
-  limit="20"
-}%]}</literal>%ENDSECTION{"select2::usergroup"}%
 %STARTSECTION{"select2::usergroup::display"}%%RENDERUSER{
   "%id%"
   type="any"
   format="$displayName"
-  groupformat="$cUID"
+  groupformat="$displayName"
 }%%ENDSECTION{"select2::usergroup::display"}%
 </verbatim>
+
 <verbatim class="tml">
-%STARTSECTION{"select2::user::ingroup"}%<literal>{"results":[%QUERYUSERS{
+%STARTSECTION{"select2::usergroup"}%<literal>{%QUERYUSERS{
+  header="\"total\":\"$count\",\"results\":["
+  footer="]"
   urlparam="q"
-  type="user"
-  ingroup="%URLPARAM{"ingroup"}%"
+  type="%URLPARAM{"type" default="user"}%"
+  ingroup="%URLPARAM{"ingroup" default=""}%"
   userformat="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
-  fields="wikiName,displayName"
+  groupformat="{\"id\":\"$json:cUID\",\"text\":\"$json:displayName\"}"
+  fields="%QUERYUSERS_DEFAULT_FIELDS%"
   limit="20"
-}%]}</literal>%ENDSECTION{"select2::user::ingroup"}%
+  sort="asc"
+}%}</literal>%ENDSECTION{"select2::usergroup"}%
 </verbatim>
