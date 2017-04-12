@@ -55,7 +55,10 @@ sub _options_raw {
   my $pref = Foswiki::Func::getPreferencesValue('USERFIELDAJAXHELPER');
   my $section = "select2::user";
   my $type = ($this->{type} =~ m/\+group\b/) ? 'any' : 'user';
-  my $ingroup = $this->param('ingroup') || '';
+  my ($oweb, $otopic) = @{$this}{'web', 'topic'};
+  Foswiki::Func::pushTopicContext($oweb, 'WebPreferences');
+  my $ingroup = $this->param('ingroup') || Foswiki::Func::getPreferencesValue('USERS_INGROUP') || '';
+  Foswiki::Func::popTopicContext();
 
   if ($pref) {
     ($web, $topic) = Foswiki::Func::normalizeWebTopicName($Foswiki::Plugins::SESSION->{webName}, $pref);
