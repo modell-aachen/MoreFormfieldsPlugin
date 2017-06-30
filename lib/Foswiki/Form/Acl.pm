@@ -68,7 +68,9 @@ sub beforeSaveHandler {
   my ($this, $topicObject) = @_;
   my $allowedUsers;
 
-  if(not $topicObject->get('FIELD', $this->{name})->{value}){
+  my $field = $topicObject->get('FIELD', $this->{name});
+
+  unless($field && $field->{value}){
     # No restrictions if it is not checked
     $allowedUsers = "";
   }
