@@ -57,6 +57,7 @@ To create a Formfield used for tagging just use a select2+multi field with the t
 The following two parameters need to be set.
    * q: This should be a query which defines in which forms to look for tags.
    * tagField: This defines the name of the tag Formfield in the queried data forms.
+   * allowCreateTags: (optional) Only members of this list (groups or users) may create new tags; others may only re-user existing ones. Leave undefined for no restrictions.
 
 ---++ Installation Instructions
 

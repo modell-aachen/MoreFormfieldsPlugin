@@ -1,0 +1,31 @@
+# MoreFormfieldsPlugin translation for German
+# Translators:
+# ModellAachen
+msgid ""
+msgstr ""
+"Project-Id-Version: MoreFormfieldsPlugin $Id\n"
+"Report-Msgid-Bugs-To: support@modell-aachen.de\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2017-10-17 15:35+0200\n"
+"Last-Translator: Modell Aachen <support@modell-aachen.de>\n"
+"Language-Team: German <http://translate.modell-aachen.de/projects/"
+"moreformfieldsplugin/releaseriga/de/>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 1.9\n"
+
+msgid ""
+"You are not authorised for creating new tags. Please contact the person "
+"responsible for the application or the wiki."
+msgstr ""
+"Sie sind nicht berechtigt neue Schlagworte anzulegen. Bitte wenden Sie sich "
+"an den Verantwortlichen der Applikation oder des Wikis."
+
+msgid "Unknown tags: %1"
+msgstr "Dem System nicht bekannte Schlagworte: %1"
+
+msgid "No authorisation"
+msgstr "Fehlende Berechtigung"

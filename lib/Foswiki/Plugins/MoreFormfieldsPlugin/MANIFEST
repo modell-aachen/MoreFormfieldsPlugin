@@ -18,6 +18,7 @@ lib/Foswiki/Form/User.pm 0644
 lib/Foswiki/Plugins/MoreFormfieldsPlugin/Clockpicker.pm 0644
 lib/Foswiki/Plugins/MoreFormfieldsPlugin/Config.spec 0644
 lib/Foswiki/Plugins/MoreFormfieldsPlugin.pm 0644
+locale/MoreFormfieldsPlugin/de.po 0644
 pub/System/MoreFormfieldsPlugin/clockpicker.css 0644
 pub/System/MoreFormfieldsPlugin/clockpicker.css.gz 0644
 pub/System/MoreFormfieldsPlugin/clockpicker.init.js 0644
@@ -51,3 +52,4 @@ pub/System/MoreFormfieldsPlugin/select2field.uncompressed.js 0644
 pub/System/MoreFormfieldsPlugin/topicfield.js 0644
 pub/System/MoreFormfieldsPlugin/topicfield.js.gz 0644
 pub/System/MoreFormfieldsPlugin/topicfield.uncompressed.js 0644
+test/unit/MoreFormfieldsPlugin/MoreFormfieldsPluginTests.pm 0644
