@@ -138,6 +138,11 @@ jQuery(function($) {
     select2opts.formatSelection = function(object, container) {
       return object.textSelected || object.text;
     };
+    if(typeof(opts.createTags) !== 'undefined' && !opts.createTags) {
+        select2opts.createTag = function() {
+            return null;
+        };
+    }
     $this.select2(select2opts);
   });
 

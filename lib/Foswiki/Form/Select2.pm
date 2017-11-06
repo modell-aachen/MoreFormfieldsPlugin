@@ -21,10 +21,13 @@ use warnings;
 use Foswiki::Form::Select ();
 use Foswiki::Plugins::JQueryPlugin ();
 use Foswiki::Plugins::MoreFormfieldsPlugin ();
+use Foswiki::Plugins::JSi18nPlugin ();
+use Foswiki::OopsException ();
 our @ISA = ('Foswiki::Form::Select');
 
 use Assert;
 use HTML::Entities;
+use URI::Escape;
 
 BEGIN {
   if ($Foswiki::cfg{UseLocale}) {
@@ -198,6 +201,10 @@ sub renderForEdit {
   $params->{'multiple'} = 'multiple' if $this->isMultiValued;
   $params->{'data-limit'} = $this->param('limit') if defined $this->param('limit');
   $params->{'data-tags'} = $this->param('tagging') if defined $this->param('tagging');
+  my $allowCreateTags = $this->param('allowCreateTags');
+  if(defined $allowCreateTags) {
+    $params->{'data-create-tags'} = isAllowed($allowCreateTags);
+  }
   $value =
     _maketag('input', {
       type => 'hidden',
@@ -208,6 +215,94 @@ sub renderForEdit {
 
   $this->addJavascript();
   return ('', $value);
+}
+
+sub isAllowed {
+  my ($list) = @_;
+
+  return 1 if Foswiki::Func::isAnAdmin();
+
+  my $cuid = Foswiki::Func::getCanonicalUserID();
+
+  foreach my $allowed (split /\s*,\s*/, $list) {
+    if(Foswiki::Func::isGroup($allowed)) {
+      if(Foswiki::Func::isGroupMember($allowed, $cuid)) {
+        return 1;
+      }
+    } else {
+      my $allowedCuid = Foswiki::Func::getCanonicalUserID($allowed);
+      if($allowedCuid && $allowedCuid eq $cuid) {
+        return 1;
+      }
+    }
+  }
+  return 0;
+}
+
+sub beforeSaveHandler {
+  my ($this, $meta, $form) = @_;
+
+  # check if new tags were added and we were allowed to do so
+
+  my $allowCreateTags = $this->param('allowCreateTags');
+  return unless defined $allowCreateTags;
+  return if isAllowed($allowCreateTags);
+
+  my $session = $Foswiki::Plugins::SESSION;
+
+  my $fromMeta = $meta->get('FIELD', $this->{name});
+  return unless $fromMeta && $fromMeta->{value} ne '';
+  my @values = split(/\s*,\s*/, $fromMeta->{value});
+
+  my $solrField = "field_$this->{name}_lst";
+
+  my $query = $this->isAJAX;
+  return unless $query && $query =~ s#.*[?&;]q=([^;&]+).*#$1#;
+  $query =~ s#\+# #g;
+  $query = uri_unescape($query);
+  return unless $query;
+
+  my $fq = "(".join(' OR ', map{"{!raw f=$solrField}:" . $_ =~ s#([" ])#\\$1#gr} @values).")";
+
+  my $searcher = Foswiki::Plugins::SolrPlugin::getSearcher($session);
+  my $response = $searcher->doSearch($query, {
+      rows => 0,
+      facets => $solrField,
+      'facet.mincount' => 1,
+      fq => $fq,
+    }
+  );
+
+  my %facets = @{$response->content->{facet_counts}->{facet_fields}->{$solrField} || []};
+
+  my @notFound = ();
+  foreach my $value (@values) {
+    push @notFound, $value unless($facets{$value});
+  }
+
+  return unless scalar @notFound;
+
+  # For some reason the MAKETEXTs in the template do not work.
+  # However, since they do not support parameters, we have to do it ourselves anyway.
+  my $line1 = Foswiki::Plugins::JSi18nPlugin::MAKETEXT($session, {
+      _DEFAULT => 'You are not authorised for creating new tags. Please contact the person responsible for the application or the wiki.'
+    }
+  );
+  my $line2 = Foswiki::Plugins::JSi18nPlugin::MAKETEXT($session, {
+      _DEFAULT => 'Unknown tags: [_1]',
+      arg1 => join(', ', @notFound),
+    }
+  );
+  my $title = Foswiki::Plugins::JSi18nPlugin::MAKETEXT($session, {
+      _DEFAULT => 'No authorisation'
+    }
+  );
+  throw Foswiki::OopsException(
+    "oopsgeneric",
+    web => $meta->web,
+    topic => $meta->topic,
+    params => [ $title, $line1, $line2 ]
+  );
 }
 
 sub renderForDisplay {

@@ -80,6 +80,7 @@ sub _restTags {
   my $start = $requestObject->param('start') || 0;
   my $limit = $requestObject->param('limit') || 10;
 
+  my $wikiUser = Foswiki::Func::getWikiName();
 
   my $tagFieldFormName = 'field_'.$tagField.'_lst';
   my %search = (
@@ -92,8 +93,13 @@ sub _restTags {
       'facet.contains.ignoreCase' => 'true',
       'facet.sort' => 'count',
       'facet.limit' => $limit,
+      'facet.mincount' => 1, # hide results we do not have access to (which will have count=0)
       'facet.offset' => $start
   );
+
+  unless (Foswiki::Func::isAnAdmin($wikiUser)) { # add ACLs
+    $search{fq} = ["access_granted:$wikiUser OR access_granted:all"];
+  }
 
   my $searcher = Foswiki::Plugins::SolrPlugin::getSearcher($session);
   my $results = $searcher->solrSearch(undef, \%search);
