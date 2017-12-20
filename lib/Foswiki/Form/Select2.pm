@@ -401,4 +401,10 @@ sub populateMetaFromQueryData {
   return $this->SUPER::populateMetaFromQueryData(@_);
 }
 
+sub solrIndexFieldHandler {
+    my ( $this, $doc, $value, $mapped) = @_;
+    return unless ($this->{type} =~ m/\+integer\b/);
+    $doc->add_fields('field_' . $this->{name} . '_i' => $value,);
+}
+
 1;

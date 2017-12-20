@@ -72,5 +72,11 @@ sub _options_raw {
   )];
 }
 
+sub solrIndexFieldHandler {
+    my ( $this, $doc, $value, $mapped) = @_;
+    my $d_value = $this->getDisplayValue($value);
+    $doc->add_fields('field_' . $name . '_dv_s' => $d_value,);
+}
+
 1;
 
