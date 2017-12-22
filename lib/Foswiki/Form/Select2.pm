@@ -404,7 +404,7 @@ sub populateMetaFromQueryData {
 sub solrIndexFieldHandler {
     my ( $this, $doc, $value, $mapped) = @_;
     return unless ($this->{type} =~ m/\+integer\b/);
-    $doc->add_fields('field_' . $this->{name} . '_i' => $value,);
+    $doc->add_fields('field_' . $this->{name} . '_i' => $value,) if defined $value && $value ne '';
 }
 
 1;

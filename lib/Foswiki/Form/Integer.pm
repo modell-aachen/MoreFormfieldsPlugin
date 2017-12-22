@@ -35,7 +35,7 @@ sub renderForEdit {
 
 sub solrIndexFieldHandler {
     my ( $this, $doc, $value, $mapped) = @_;
-    $doc->add_fields('field_' . $this->{name} . '_i' => $value,);
+    $doc->add_fields('field_' . $this->{name} . '_i' => $value,) if defined $value && $value ne '';
 }
 
 1;
