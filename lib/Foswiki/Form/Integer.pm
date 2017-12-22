@@ -37,12 +37,6 @@ sub solrIndexFieldHandler {
     my ( $this, $doc, $value, $mapped) = @_;
     $doc->add_fields('field_' . $this->{name} . '_i' => $value,);
 }
-# sub beforeSaveHandler {
-#   my ($this, $meta, $form) = @_;
-
-#   my $fromMeta = $meta->get('FIELD', $this->{name});
-#   return unless $fromMeta && $fromMeta->{value} ne '' && int($fromMeta->{value});
-# }
 
 1;
 __END__
