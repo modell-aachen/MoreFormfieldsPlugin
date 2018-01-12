@@ -14,6 +14,7 @@ lib/Foswiki/Form/Phonenumber.pm 0644
 lib/Foswiki/Form/Select2.pm 0644
 lib/Foswiki/Form/Time.pm 0644
 lib/Foswiki/Form/Topic.pm 0644
+lib/Foswiki/Form/Integer.pm 0644
 lib/Foswiki/Form/User.pm 0644
 lib/Foswiki/Plugins/MoreFormfieldsPlugin/Clockpicker.pm 0644
 lib/Foswiki/Plugins/MoreFormfieldsPlugin/Config.spec 0644
