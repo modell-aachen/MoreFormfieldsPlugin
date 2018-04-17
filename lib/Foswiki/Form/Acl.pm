@@ -43,17 +43,15 @@ sub isValueMapped {
 sub param {
   my ($this, $key, $topicObject) = @_;
 
-  unless (defined $this->{_params}) {
-    my ($web, $topic) = @{$this}{'web', 'topic'};
-    my $form = Foswiki::Form->new($Foswiki::Plugins::SESSION, $web, $topic);
-    my %params = Foswiki::Func::extractParameters($form->expandMacros($this->{attributes}));
-    $this->{_params} = \%params;
+  my ($web, $topic) = @{$this}{'web', 'topic'};
+  my $form = Foswiki::Form->new($Foswiki::Plugins::SESSION, $web, $topic);
+  my %params = Foswiki::Func::extractParameters($form->expandMacros($this->{attributes}));
+  $this->{_params} = \%params;
 
-    $form->getPreference('dummy'); # make sure it's cached
-    for my $key ($form->{_preferences}->prefs) {
-        next unless $key =~ /^\Q$this->{name}\E_acl_(\w+)$/;
-        $this->{_params}{$1} = $topicObject->expandMacros($form->getPreference($key));
-    }
+  $form->getPreference('dummy'); # make sure it's cached
+  for my $key ($form->{_preferences}->prefs) {
+      next unless $key =~ /^\Q$this->{name}\E_acl_(\w+)$/;
+      $this->{_params}{$1} = $topicObject->expandMacros($form->getPreference($key));
   }
 
   if (defined $key) {
