@@ -46,20 +46,15 @@ sub param {
   my ($web, $topic) = @{$this}{'web', 'topic'};
   use Data::Dumper;
   my $form = Foswiki::Form->new($Foswiki::Plugins::SESSION, $web, $topic);
-  
+
   my %params = Foswiki::Func::extractParameters($form->expandMacros($this->{attributes}));
   $this->{_params} = \%params;
 
   $form->getPreference('dummy'); # make sure it's cached
-  Foswiki::Func::writeWarning(Dumper($form->{_preferences}->prefs));
   for my $key ($form->{_preferences}->prefs) {
-    Foswiki::Func::writeWarning($key);
       next unless $key =~ /^\Q$this->{name}\E_eval_(\w+)$/;
-      Foswiki::Func::writeWarning(Dumper($topicObject->expandMacros("%QUERY{\"3spe0h\"}%")));
       $this->{_params}{$1} = $topicObject->expandMacros($form->getPreference($key));
   }
-
-  Foswiki::Func::writeWarning("Evaled!");
 
   if (defined $key) {
     my $res = $this->{_params}{$key};
