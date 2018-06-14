@@ -44,24 +44,13 @@ sub param {
   my ($this, $key, $topicObject) = @_;
 
   my ($web, $topic) = @{$this}{'web', 'topic'};
-  use Data::Dumper;
   my $form = Foswiki::Form->new($Foswiki::Plugins::SESSION, $web, $topic);
-
-  my %params = Foswiki::Func::extractParameters($form->expandMacros($this->{attributes}));
-  $this->{_params} = \%params;
 
   $form->getPreference('dummy'); # make sure it's cached
   for my $key ($form->{_preferences}->prefs) {
       next unless $key =~ /^\Q$this->{name}\E_eval_(\w+)$/;
-      $this->{_params}{$1} = $topicObject->expandMacros($form->getPreference($key));
+      return $topicObject->expandMacros($form->getPreference($key));
   }
-
-  if (defined $key) {
-    my $res = $this->{_params}{$key};
-    $res = $this->{_defaultsettings}{$key} unless defined $res;
-    return $res;
-  }
-  return $this->{_params};
 }
 
 sub beforeSaveHandler {
