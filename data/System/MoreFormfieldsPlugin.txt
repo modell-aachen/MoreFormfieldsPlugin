@@ -40,6 +40,8 @@ These are:
    * =acl=: A checkbox field which can be used to restrict access to certain users when a topic is saved. It is configured via preferences in the form, similar to the select2 field. E.g for an acl field called 'Foo' you can set the 'allowedUsers' option with =Foo_acl_allowedUsers=.
       * =allowedUsers=: This option defines to which users view/edit rights are restricted when the checkbox is checked. This option will be evaluated when a topic with the attached form is saved. Evaluation is performed in the context of the saved topic. So it is possible to query for data provided by other form fields.
       * =triggerCondition=: This option defines a condition that needs to be true to trigger access restriction on a topic save (even when the checkbox is checked). Again this option is evaluated in the context of the saved topic. By default this is undefined/false, so access will never be restricted. Set this to 1 to always restrict access when the checkbox is checked.
+   * =eval=: A text field which will automatically set it's contents on topic saved. The content is evaluated based on a configuration string. This string is set as a form preference analogous to the select2 preferences. This field is only intended to be used as a hidden input field.
+      * =value=: Defines the content that is saved in the eval field. The string is evaluated in the context of the saved topic.
 
 ---++ !ExampleForm definition
 
