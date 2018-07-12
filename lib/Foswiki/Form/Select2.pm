@@ -145,6 +145,8 @@ sub renderForEdit {
     my @labels;
     if ($this->param('displayTopic') && $this->param('displaySection')) {
       @labels = $this->mapValuesToLabels(@values);
+    }elsif($this->param('lookupTopicTitle') ) {
+      @labels = $this->mapValuesToTopicTitle(@values);
     }
     while (my $v = shift @values) {
       my %params;
@@ -342,6 +344,26 @@ sub mapValuesToLabels {
   my @res = map { $session->{prefs}->setSessionPreferences(id => $_); $meta->expandMacros($text) } @values;
   $session->{prefs}->popTopicContext();
   @res;
+}
+
+sub mapValuesToTopicTitle {
+  my ($this, @webTopics) = @_;
+  my @labels;
+
+  foreach my $webTopic (@topics) {
+    my ($web, $topic) = Foswiki::Func::normalizeWebTopicName(undef, $webTopic);
+    my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
+    return @topics unless $meta && $meta->haveAccess('VIEW');
+
+    my $title = $meta->get('FIELD', 'TopicTitle');
+    if ($title) {
+      push( @labels, $title->{value} );
+    }else{
+      push( @labels, $webTopic);
+    }
+  }
+
+  return @labels;
 }
 
 sub getDisplayValue {
