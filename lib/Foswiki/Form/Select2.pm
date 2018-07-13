@@ -350,10 +350,10 @@ sub mapValuesToTopicTitle {
   my ($this, @webTopics) = @_;
   my @labels;
 
-  foreach my $webTopic (@topics) {
+  foreach my $webTopic (@webTopics) {
     my ($web, $topic) = Foswiki::Func::normalizeWebTopicName(undef, $webTopic);
     my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
-    return @topics unless $meta && $meta->haveAccess('VIEW');
+    return @webTopics unless $meta && $meta->haveAccess('VIEW');
 
     my $title = $meta->get('FIELD', 'TopicTitle');
     if ($title) {
