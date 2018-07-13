@@ -32,7 +32,7 @@ our @ISA = ('Foswiki::Form::Checkbox');
 sub new {
     my $class = shift;
     my $this = $class->SUPER::new(@_);
-    $this->{size} = 1;
+    $this->{size} = undef;
     return $this;
 }
 
