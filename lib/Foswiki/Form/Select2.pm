@@ -133,9 +133,9 @@ sub renderForEdit {
   my $choices = '';
   my $choices_count = 0;
 
+  my $placeholder = $this->param('placeholder');
+  $placeholder = ' ' if (not defined $placeholder) || $placeholder eq '';
   unless ($this->isMultiValued) {
-      my $placeholder = $this->param('placeholder');
-      $placeholder = ' ' if not defined $placeholder || $placeholder eq '';
       $choices .= _maketag('option', {value => ''}, $placeholder);
   }
 
@@ -195,8 +195,7 @@ sub renderForEdit {
     'data-width' => $this->param("width") || 'element',
     'data-allow-clear' => $this->param("allowClear") || 'false',
   };
-  $params->{'data-placeholder'} = $this->param('placeholder') if defined $this->param('placeholder');
-  $params->{'data-placeholder'} = '' if (not defined $this->param('placeholder')) && $this->param("allowClear");
+  $params->{'data-placeholder'} = $placeholder if defined $placeholder;
   $params->{'data-placeholdervalue'} = $this->param('placeholderValue') if defined $this->param('placeholderValue');
   $params->{style} = 'width: '.$this->{size}.'ex;' if $this->{size};
   if (defined $url) {
