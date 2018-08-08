@@ -133,6 +133,12 @@ sub renderForEdit {
   my $choices = '';
   my $choices_count = 0;
 
+  unless ($this->isMultiValued) {
+      my $placeholder = $this->param('placeholder');
+      $placeholder = ' ' if not defined $placeholder || $placeholder eq '';
+      $choices .= _maketag('option', {value => ''}, $placeholder);
+  }
+
   $value = '' unless defined $value;
   $value =~ s/(?:^\s+|\s+$)//;
   my %isSelected = map { $_ => 1 } split(/\s*,\s*/, $value);

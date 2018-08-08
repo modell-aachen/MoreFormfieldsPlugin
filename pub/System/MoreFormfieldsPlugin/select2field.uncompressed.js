@@ -61,16 +61,14 @@ jQuery(function($) {
       placeholder: opts.placeholder,
       minimumInputLength: opts.minimumInputLength,
       width: opts.width,
-      multiple: opts.multiple,
+      multiple: $this.prop('multiple'),
       allowClear: !!(opts.allowClear),
       delay: opts.delay || 0
     };
     if(opts.placeholder !== undefined && opts.placeholder !== false) {
-        var id = (opts.placeholdervalue !== 'undefined' && opts.placeholdervalue !== false) ? opts.placeholdervalue : '';
+        var id = (opts.placeholdervalue !== 'undefined' && opts.placeholdervalue !== undefined && opts.placeholdervalue !== false) ? opts.placeholdervalue : '';
 
         select2opts.placeholder = { id: id, text: opts.placeholder };
-
-        $this.prepend($('<option></option>').val(id).text(opts.placeholder));
     }
     if (opts.url) {
       var makeParams = function() {
