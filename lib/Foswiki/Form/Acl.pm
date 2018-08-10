@@ -62,6 +62,18 @@ sub param {
   return $this->{_params};
 }
 
+sub getOptions {
+    my ($this) = @_;
+
+    return $this->{_options} if $this->{_options};
+
+    my $result = $this->SUPER::getOptions(@_);
+    foreach my $value (values %{$this->{valueMap}}) {
+        $value =~ s/&#(\d+);/chr($1)/ge;
+    }
+    return $result;
+}
+
 sub beforeSaveHandler {
   my ($this, $topicObject) = @_;
   my $allowedUsers;
