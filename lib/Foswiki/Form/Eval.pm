@@ -49,7 +49,8 @@ sub param {
   $form->getPreference('dummy'); # make sure it's cached
   for my $key ($form->{_preferences}->prefs) {
       next unless $key =~ /^\Q$this->{name}\E_eval_(\w+)$/;
-      return $topicObject->expandMacros($form->getPreference($key));
+      my $expanded = $topicObject->expandMacros($form->getPreference($key));
+      return Foswiki::Func::decodeFormatTokens($expanded);
   }
 }
 
