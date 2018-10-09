@@ -32,7 +32,7 @@ our @ISA = ('Foswiki::Form::Checkbox');
 sub new {
     my $class = shift;
     my $this = $class->SUPER::new(@_);
-    $this->{size} = 1;
+    $this->{size} = undef;
     return $this;
 }
 
@@ -60,6 +60,18 @@ sub param {
     return $res;
   }
   return $this->{_params};
+}
+
+sub getOptions {
+    my ($this) = @_;
+
+    return $this->{_options} if $this->{_options};
+
+    my $result = $this->SUPER::getOptions(@_);
+    foreach my $value (values %{$this->{valueMap}}) {
+        $value =~ s/&#(\d+);/chr($1)/ge;
+    }
+    return $result;
 }
 
 sub beforeSaveHandler {
