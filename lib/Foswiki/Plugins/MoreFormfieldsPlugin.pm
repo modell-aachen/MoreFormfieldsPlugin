@@ -87,7 +87,7 @@ sub _restTags {
   my $start = $requestObject->param('start') || 0;
   my $limit = $requestObject->param('limit') || 10;
 
-  my $wikiUser = Foswiki::Func::getWikiName();
+  my $searcher = Foswiki::Plugins::SolrPlugin::getSearcher($session);
 
   my $tagFieldFormName = 'field_'.$tagField.'_lst';
   my %search = (
@@ -104,11 +104,8 @@ sub _restTags {
       'facet.offset' => $start
   );
 
-  unless (Foswiki::Func::isAnAdmin($wikiUser)) { # add ACLs
-    $search{fq} = ["access_granted:$wikiUser OR access_granted:all"];
-  }
+  $search{fq} = [$searcher->getACLFilters()];
 
-  my $searcher = Foswiki::Plugins::SolrPlugin::getSearcher($session);
   my $results = $searcher->solrSearch(undef, \%search);
   my $content = $results->raw_response;
 
