@@ -13,12 +13,13 @@
 # GNU General Public License for more details, published at
 # http://www.gnu.org/copyleft/gpl.html
 
-package Foswiki::Form::Eval;
+package Foswiki::Form::Matheval;
 
 use strict;
 use warnings;
 
 use Foswiki::Form::FieldDefinition ();
+use Math::Calculus::Expression;
 
 BEGIN {
     if ( $Foswiki::cfg{UseLocale} ) {
@@ -33,7 +34,6 @@ sub new {
     my $class = shift;
     my $this = $class->SUPER::new(@_);
     $this->{size} = 1;
-    $this->{delayBeforeSaveHandler} = 1;
     return $this;
 }
 
@@ -49,15 +49,33 @@ sub param {
 
   $form->getPreference('dummy'); # make sure it's cached
   for my $key ($form->{_preferences}->prefs) {
-      next unless $key =~ /^\Q$this->{name}\E_eval_(\w+)$/;
+      next unless $key =~ /^\Q$this->{name}\E_matheval_(\w+)$/;
       my $expanded = $topicObject->expandMacros($form->getPreference($key));
       return Foswiki::Func::decodeFormatTokens($expanded);
   }
 }
 
+sub renderForEdit {
+    my ( $this, $topicObject, $value ) = @_;
+
+    return (
+        '',
+        "This field is not editable"
+    );
+}
+
 sub beforeSaveHandler {
   my ($this, $topicObject) = @_;
-  my $valueToSet = $this->param('value', $topicObject);
+  my $mathExpression = $this->param('expression', $topicObject);
+
+  my $evaluator = Math::Calculus::Expression->new();
+
+  $evaluator->setExpression($mathExpression);
+  my $valueToSet = $evaluator->evaluate();
+
+  if(!$valueToSet){
+    $valueToSet = "N/A";
+  }
 
   $topicObject->putKeyed('FIELD', {
     name => $this->{name},
@@ -66,6 +84,12 @@ sub beforeSaveHandler {
     value => $valueToSet
   });
 }
+
+sub solrIndexFieldHandler {
+    my ( $this, $doc, $value, $mapped) = @_;
+    $doc->add_fields('field_' . $this->{name} . '_f' => $value,) if defined $value && $value ne '';
+}
+
 
 1;
 

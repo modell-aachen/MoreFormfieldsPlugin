@@ -4,6 +4,7 @@ lib/Foswiki/Form/Acl.pm 0644
 lib/Foswiki/Form/Autofill.pm 0644
 lib/Foswiki/Form/Dbquery.pm 0644
 lib/Foswiki/Form/Eval.pm 0644
+lib/Foswiki/Form/Matheval.pm 0644
 lib/Foswiki/Form/Firstallcheckbox.pm 0644
 lib/Foswiki/Form/Icon.pm 0644
 lib/Foswiki/Form/Id.pm 0644

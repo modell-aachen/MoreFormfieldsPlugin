@@ -64,10 +64,17 @@ sub beforeSaveHandler {
 
   # forward to formfields
   foreach my $field (@{$form->getFields}) {
-    if ($field->can("beforeSaveHandler")) {
+    if ($field->can("beforeSaveHandler") && !$field->{delayBeforeSaveHandler}) {
       $field->beforeSaveHandler($meta, $form);
     }
   }
+
+    foreach my $field (@{$form->getFields}) {
+    if ($field->can("beforeSaveHandler") && $field->{delayBeforeSaveHandler}) {
+      $field->beforeSaveHandler($meta, $form);
+    }
+  }
+
 }
 
 sub _restTags {
