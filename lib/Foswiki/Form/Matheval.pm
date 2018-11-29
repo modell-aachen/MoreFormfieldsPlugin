@@ -60,7 +60,19 @@ sub renderForEdit {
 
     return (
         '',
-        "This field is not editable"
+        qq{
+          <div class="wfapp-info-block grid-x ma-disabled-text ma-margin-top-small">
+            <div class="cell shrink">
+                <i class="far fa-info-circle"></i>
+            </div>
+            <div class="cell shrink">
+                <div class="ma-spacer" style="width: 16px;"></div>
+            </div>
+            <div class="cell auto">
+                %MAKETEXT{"Automatically computed on save"}%
+            </div>
+          </div>
+        }
     );
 }
 
