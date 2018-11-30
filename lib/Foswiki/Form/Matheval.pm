@@ -80,6 +80,8 @@ sub beforeSaveHandler {
   my ($this, $topicObject) = @_;
   my $mathExpression = $this->param('expression', $topicObject);
 
+  $mathExpression =~ s/,/./g;
+
   my $evaluator = Foswiki::Plugins::MoreFormfieldsPlugin::MathExpression->new();
 
   $evaluator->setExpression($mathExpression);
