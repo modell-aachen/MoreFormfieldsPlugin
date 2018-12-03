@@ -33,6 +33,7 @@ sub new {
     my $class = shift;
     my $this = $class->SUPER::new(@_);
     $this->{size} = 1;
+    $this->{delayBeforeSaveHandler} = 1;
     return $this;
 }
 
@@ -48,7 +49,7 @@ sub param {
 
   $form->getPreference('dummy'); # make sure it's cached
   for my $key ($form->{_preferences}->prefs) {
-      next unless $key =~ /^\Q$this->{name}\E_eval_(\w+)$/;
+      next unless $key =~ /^\Q$this->{name}\E_$this->{type}_(\w+)$/;
       my $expanded = $topicObject->expandMacros($form->getPreference($key));
       return Foswiki::Func::decodeFormatTokens($expanded);
   }
