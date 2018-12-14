@@ -8,7 +8,7 @@ jQuery(function($) {
   };
 
   $(".foswikiSelect2Field:not(.foswikiSelect2FieldInited)").livequery(function() {
-    var $this = $(this), 
+    var $this = $(this),
         opts = $.extend({}, defaults, $this.data()),
         requestOpts = $.extend({}, opts),
         val = $this.val();
@@ -41,11 +41,16 @@ jQuery(function($) {
         if (v.length === 1) {
           v[1] = v[0];
         }
+        var value = "";
         if (v[1].match(/^=/)) {
-          opts.ajaxpassfields[v[0]] = v[1].replace(/^=/, '');
+          value = v[1].replace(/^=/, '');
         } else {
-          opts.ajaxpassfields[v[0]] = form.find('[name="'+v[1]+'"]');
+          value = form.find('[name="'+v[1]+'"]');
         }
+        if( v[0] in opts.ajaxpassfields ) {
+          value += "," + opts.ajaxpassfields[v[0]];
+        }
+        opts.ajaxpassfields[v[0]] = value;
       });
     }
 
@@ -56,16 +61,14 @@ jQuery(function($) {
       placeholder: opts.placeholder,
       minimumInputLength: opts.minimumInputLength,
       width: opts.width,
-      multiple: opts.multiple,
+      multiple: $this.prop('multiple'),
       allowClear: !!(opts.allowClear),
       delay: opts.delay || 0
     };
     if(opts.placeholder !== undefined && opts.placeholder !== false) {
-        var id = (opts.placeholdervalue !== 'undefined' && opts.placeholdervalue !== false) ? opts.placeholdervalue : '';
+        var id = (opts.placeholdervalue !== 'undefined' && opts.placeholdervalue !== undefined && opts.placeholdervalue !== false) ? opts.placeholdervalue : '';
 
         select2opts.placeholder = { id: id, text: opts.placeholder };
-
-        $this.prepend($('<option></option>').val(id).text(opts.placeholder));
     }
     if (opts.url) {
       var makeParams = function() {

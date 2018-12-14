@@ -29,3 +29,6 @@ msgstr "Dem System nicht bekannte Schlagworte: %1"
 
 msgid "No authorisation"
 msgstr "Fehlende Berechtigung"
+
+msgid "Automatically computed on save"
+msgstr "Wird beim Speichern berechnet"

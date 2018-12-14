@@ -133,6 +133,12 @@ sub renderForEdit {
   my $choices = '';
   my $choices_count = 0;
 
+  my $placeholder = $this->param('placeholder');
+  $placeholder = ' ' if (not defined $placeholder) || $placeholder eq '';
+  unless ($this->isMultiValued) {
+      $choices .= _maketag('option', {value => ''}, $placeholder);
+  }
+
   $value = '' unless defined $value;
   $value =~ s/(?:^\s+|\s+$)//;
   my %isSelected = map { $_ => 1 } split(/\s*,\s*/, $value);
@@ -145,6 +151,8 @@ sub renderForEdit {
     my @labels;
     if ($this->param('displayTopic') && $this->param('displaySection')) {
       @labels = $this->mapValuesToLabels(@values);
+    }elsif($this->param('lookupTopicTitle') ) {
+      @labels = $this->mapValuesToTopicTitle(@values);
     }
     while (my $v = shift @values) {
       my %params;
@@ -187,8 +195,7 @@ sub renderForEdit {
     'data-width' => $this->param("width") || 'element',
     'data-allow-clear' => $this->param("allowClear") || 'false',
   };
-  $params->{'data-placeholder'} = $this->param('placeholder') if defined $this->param('placeholder');
-  $params->{'data-placeholder'} = '' if (not defined $this->param('placeholder')) && $this->param("allowClear");
+  $params->{'data-placeholder'} = $placeholder if defined $placeholder;
   $params->{'data-placeholdervalue'} = $this->param('placeholderValue') if defined $this->param('placeholderValue');
   $params->{style} = 'width: '.$this->{size}.'ex;' if $this->{size};
   if (defined $url) {
@@ -342,6 +349,26 @@ sub mapValuesToLabels {
   my @res = map { $session->{prefs}->setSessionPreferences(id => $_); $meta->expandMacros($text) } @values;
   $session->{prefs}->popTopicContext();
   @res;
+}
+
+sub mapValuesToTopicTitle {
+  my ($this, @webTopics) = @_;
+  my @labels;
+
+  foreach my $webTopic (@webTopics) {
+    my ($web, $topic) = Foswiki::Func::normalizeWebTopicName(undef, $webTopic);
+    my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
+    return @webTopics unless $meta && $meta->haveAccess('VIEW');
+
+    my $title = $meta->get('FIELD', 'TopicTitle');
+    if ($title) {
+      push( @labels, $title->{value} );
+    }else{
+      push( @labels, $webTopic);
+    }
+  }
+
+  return @labels;
 }
 
 sub getDisplayValue {
