@@ -46,6 +46,7 @@ sub getOptions {
 sub isAJAX {
   my $this = shift;
   my $options = $this->_options_raw;
+  return 0 unless $options;
   return $options->[0] if @$options && $options->[0] =~ m#^https?://#;
 }
 
@@ -142,7 +143,10 @@ sub renderForEdit {
   $value = '' unless defined $value;
   $value =~ s/(?:^\s+|\s+$)//;
   my %isSelected = map { $_ => 1 } split(/\s*,\s*/, $value);
-  my @options = @{$this->SUPER::getOptions};
+  my @options;
+  if($this->SUPER::getOptions) {
+      @options = @{$this->SUPER::getOptions};
+  }
 
   my $url;
   if ($url = $this->isAJAX) {
@@ -166,7 +170,7 @@ sub renderForEdit {
       $choices .= _maketag('option', \%params, $label);
       $choices_count++;
     }
-  } else {
+  } elsif( $this->_options_raw ) {
     foreach my $item (@{$this->_options_raw}) {
       my $option = $item;    # Item9647: make a copy not to modify the original value in the array
       my %params;
