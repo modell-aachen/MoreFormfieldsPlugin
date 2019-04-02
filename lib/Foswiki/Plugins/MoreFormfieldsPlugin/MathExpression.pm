@@ -1052,7 +1052,7 @@ sub higherPrecedence {
 		return 1;
 	} elsif ($a eq '+' && $b =~ /\+|-/) {
 		return 1;
-	} elsif ($a eq '-' && $b eq '-') {
+	} elsif ($a eq '-' && $b =~ /\+|-/) {
 		return 1;
 	}
 

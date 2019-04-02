@@ -43,10 +43,13 @@ sub beforeSaveHandler {
 
   $mathExpression =~ s/,/./g;
 
-  my $evaluator = Foswiki::Plugins::MoreFormfieldsPlugin::MathExpression->new();
+  my $valueToSet;
+  unless($mathExpression =~ m#_NaN_#) {
+      my $evaluator = Foswiki::Plugins::MoreFormfieldsPlugin::MathExpression->new();
 
-  $evaluator->setExpression($mathExpression);
-  my $valueToSet = $evaluator->evaluate();
+      $evaluator->setExpression($mathExpression);
+      $valueToSet = $evaluator->evaluate();
+  }
 
   if(!defined $valueToSet){
     $valueToSet = "NaN";
