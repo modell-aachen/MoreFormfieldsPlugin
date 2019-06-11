@@ -32,7 +32,6 @@ These are:
       * =limit=: if set, the value of this parameter is passed to the AJAX call. Default is 10.
       * =tagging=: if set to true, tagging is enabled in Select2.
       * =allowCreateTags=: (optional; with =tagging= only) only members of this list (groups or users) may create new tags; others may only re-user existing ones. Leave undefined for no restrictions.
-   * =firstallcheckbox=: behaves just like the normal checkbox type, but the first checkbox in the list is assumed to have a special meaning: its value is taken to mean "all options". Therefore, checking the first box will automatically uncheck all others, and checking any other box will uncheck the first. Add '+last' to the type to make the last checkbox special instead. The '+buttons' subtype normally available for 'checkbox' is not supported.
    * =autofill=
    * =phonenumber=
    * =time=
