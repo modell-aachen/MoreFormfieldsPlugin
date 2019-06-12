@@ -5,10 +5,6 @@ lib/Foswiki/Form/Autofill.pm 0644
 lib/Foswiki/Form/Eval.pm 0644
 lib/Foswiki/Form/Matheval.pm 0644
 lib/Foswiki/Form/Id.pm 0644
-lib/Foswiki/Form/Ipaddress.pm 0644
-lib/Foswiki/Form/Macaddress.pm 0644
-lib/Foswiki/Form/Netmask.pm 0644
-lib/Foswiki/Form/NetworkAddressField.pm 0644
 lib/Foswiki/Form/Phonenumber.pm 0644
 lib/Foswiki/Form/Realnumber.pm 0644
 lib/Foswiki/Form/Select2.pm 0644
@@ -34,9 +30,6 @@ pub/System/MoreFormfieldsPlugin/Makefile 0644
 pub/System/MoreFormfieldsPlugin/moreformfields.css 0644
 pub/System/MoreFormfieldsPlugin/moreformfields.css.gz 0644
 pub/System/MoreFormfieldsPlugin/moreformfields.uncompressed.css 0644
-pub/System/MoreFormfieldsPlugin/networkaddress.js 0644
-pub/System/MoreFormfieldsPlugin/networkaddress.js.gz 0644
-pub/System/MoreFormfieldsPlugin/networkaddress.uncompressed.js 0644
 pub/System/MoreFormfieldsPlugin/phonenumber.js 0644
 pub/System/MoreFormfieldsPlugin/phonenumber.js.gz 0644
 pub/System/MoreFormfieldsPlugin/phonenumber.uncompressed.js 0644
