@@ -7,7 +7,6 @@ lib/Foswiki/Form/Matheval.pm 0644
 lib/Foswiki/Form/Id.pm 0644
 lib/Foswiki/Form/Realnumber.pm 0644
 lib/Foswiki/Form/Select2.pm 0644
-lib/Foswiki/Form/Topic.pm 0644
 lib/Foswiki/Form/Integer.pm 0644
 lib/Foswiki/Form/User.pm 0644
 lib/Foswiki/Plugins/MoreFormfieldsPlugin/MathExpression.pm 0644
@@ -21,7 +20,4 @@ pub/System/MoreFormfieldsPlugin/moreformfields.uncompressed.css 0644
 pub/System/MoreFormfieldsPlugin/select2field.js 0644
 pub/System/MoreFormfieldsPlugin/select2field.js.gz 0644
 pub/System/MoreFormfieldsPlugin/select2field.uncompressed.js 0644
-pub/System/MoreFormfieldsPlugin/topicfield.js 0644
-pub/System/MoreFormfieldsPlugin/topicfield.js.gz 0644
-pub/System/MoreFormfieldsPlugin/topicfield.uncompressed.js 0644
 test/unit/MoreFormfieldsPlugin/MoreFormfieldsPluginTests.pm 0644
