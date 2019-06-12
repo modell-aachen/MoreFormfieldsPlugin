@@ -3,7 +3,6 @@ TARGET= \
   moreformfields.css \
   userfield.js \
   topicfield.js \
-  phonenumber.js \
   clockpicker.js \
   clockpicker.init.js \
   clockpicker.css

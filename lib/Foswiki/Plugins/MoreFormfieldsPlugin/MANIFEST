@@ -5,7 +5,6 @@ lib/Foswiki/Form/Autofill.pm 0644
 lib/Foswiki/Form/Eval.pm 0644
 lib/Foswiki/Form/Matheval.pm 0644
 lib/Foswiki/Form/Id.pm 0644
-lib/Foswiki/Form/Phonenumber.pm 0644
 lib/Foswiki/Form/Realnumber.pm 0644
 lib/Foswiki/Form/Select2.pm 0644
 lib/Foswiki/Form/Time.pm 0644
@@ -30,10 +29,6 @@ pub/System/MoreFormfieldsPlugin/Makefile 0644
 pub/System/MoreFormfieldsPlugin/moreformfields.css 0644
 pub/System/MoreFormfieldsPlugin/moreformfields.css.gz 0644
 pub/System/MoreFormfieldsPlugin/moreformfields.uncompressed.css 0644
-pub/System/MoreFormfieldsPlugin/phonenumber.js 0644
-pub/System/MoreFormfieldsPlugin/phonenumber.js.gz 0644
-pub/System/MoreFormfieldsPlugin/phonenumber.uncompressed.js 0644
-pub/System/MoreFormfieldsPlugin/phone.png 0644
 pub/System/MoreFormfieldsPlugin/select2field.js 0644
 pub/System/MoreFormfieldsPlugin/select2field.js.gz 0644
 pub/System/MoreFormfieldsPlugin/select2field.uncompressed.js 0644
