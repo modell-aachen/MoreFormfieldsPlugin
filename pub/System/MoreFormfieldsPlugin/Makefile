@@ -7,8 +7,7 @@ TARGET= \
   phonenumber.js \
   clockpicker.js \
   clockpicker.init.js \
-  clockpicker.css \
-  iconfield.js
+  clockpicker.css
 
 -include $(FOSWIKI_ROOT)/pub/System/JQueryPlugin/Makefile.include
 

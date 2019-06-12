@@ -4,7 +4,6 @@ lib/Foswiki/Form/Acl.pm 0644
 lib/Foswiki/Form/Autofill.pm 0644
 lib/Foswiki/Form/Eval.pm 0644
 lib/Foswiki/Form/Matheval.pm 0644
-lib/Foswiki/Form/Icon.pm 0644
 lib/Foswiki/Form/Id.pm 0644
 lib/Foswiki/Form/Ipaddress.pm 0644
 lib/Foswiki/Form/Macaddress.pm 0644
@@ -31,10 +30,6 @@ pub/System/MoreFormfieldsPlugin/clockpicker.js 0644
 pub/System/MoreFormfieldsPlugin/clockpicker.js.gz 0644
 pub/System/MoreFormfieldsPlugin/clockpicker.uncompressed.css 0644
 pub/System/MoreFormfieldsPlugin/clockpicker.uncompressed.js 0644
-pub/System/MoreFormfieldsPlugin/iconfield.js 0644
-pub/System/MoreFormfieldsPlugin/iconfield.js.gz 0644
-pub/System/MoreFormfieldsPlugin/iconfield.uncompressed.js 0644
-pub/System/MoreFormfieldsPlugin/icons.yml 0644
 pub/System/MoreFormfieldsPlugin/Makefile 0644
 pub/System/MoreFormfieldsPlugin/moreformfields.css 0644
 pub/System/MoreFormfieldsPlugin/moreformfields.css.gz 0644
