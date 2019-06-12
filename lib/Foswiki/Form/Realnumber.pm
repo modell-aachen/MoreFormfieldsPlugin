@@ -29,9 +29,13 @@ sub renderForEdit {
     my ( $this, $topicObject, $value ) = @_;
 
     my $mandatoryAttribute = ($this->isMandatory ? ' is-mandatory' : '');
+    $value = Foswiki::Func::encode($value);
+    my $name = Foswiki::Func::encode($this->{name});
+    my $size = Foswiki::Func::encode($this->{size});
+
     return (
         '',
-        "<vue-input-real-number-form-wrapper class='vue-container'$mandatoryAttribute value='$value' name='$this->{name}' :size='$this->{size}'></vue-input-real-number-wrapper>"
+        "<vue-input-real-number-form-wrapper class='vue-container'$mandatoryAttribute value='$value' name='$name' :size='$size'></vue-input-real-number-wrapper>"
     );
 }
 
