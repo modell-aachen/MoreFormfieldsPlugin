@@ -26,8 +26,8 @@ sub new {
 
 sub renderForEdit {
     my ( $this, $topicObject, $value ) = @_;
-    $name = Foswiki::Func::encode($this->{name});
-    $size = Foswiki::Func::encode($this->{size});
+    my $name = Foswiki::Func::encode($this->{name});
+    my $size = Foswiki::Func::encode($this->{size});
     $value = Foswiki::Func::encode($value);
     return (
         '',
