@@ -327,7 +327,9 @@ sub renderForDisplay {
   my ($this, $format, $value, $attrs) = @_;
 
 
-  my $displayValue = $this->getDisplayValue($value);
+  my $displayValue = Foswiki::Func::encode($this->getDisplayValue($value));
+  $value = Foswiki::Func::encode($value);
+
   $format =~ s/\$value\(display\)/$displayValue/g;
   $format =~ s/\$value/$value/g;
   $format =~ s/\$edit\b/$this->renderForEdit($attrs->{meta}, $attrs->{origValue})/eg if $attrs->{meta} && defined $attrs->{origValue};

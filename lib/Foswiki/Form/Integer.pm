@@ -26,10 +26,12 @@ sub new {
 
 sub renderForEdit {
     my ( $this, $topicObject, $value ) = @_;
-
+    my $name = Foswiki::Func::encode($this->{name});
+    my $size = Foswiki::Func::encode($this->{size});
+    $value = Foswiki::Func::encode($value);
     return (
         '',
-        "<input type='number' name='$this->{name}' size='$this->{size}' value='$value' class='" . $this->cssClasses('foswikiInputField') . "' />"
+        "<input type='number' name='$name' size='$size' value='$value' class='" . $this->cssClasses('foswikiInputField') . "' />"
     );
 }
 
