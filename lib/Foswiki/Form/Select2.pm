@@ -36,6 +36,13 @@ BEGIN {
   }
 }
 
+sub new {
+    my $class = shift;
+    my $this  = $class->SUPER::new(@_);
+    $this->{displayTopicCache} = {};
+    return $this;
+}
+
 sub getOptions {
   my $this = shift;
   my $options = $this->_options_raw;
@@ -320,7 +327,9 @@ sub renderForDisplay {
   my ($this, $format, $value, $attrs) = @_;
 
 
-  my $displayValue = $this->getDisplayValue($value);
+  my $displayValue = Foswiki::Func::encode($this->getDisplayValue($value));
+  $value = Foswiki::Func::encode($value);
+
   $format =~ s/\$value\(display\)/$displayValue/g;
   $format =~ s/\$value/$value/g;
   $format =~ s/\$edit\b/$this->renderForEdit($attrs->{meta}, $attrs->{origValue})/eg if $attrs->{meta} && defined $attrs->{origValue};
@@ -334,7 +343,10 @@ sub mapValuesToLabels {
   my $session = $Foswiki::Plugins::SESSION;
   my ($mweb, $mtopic) = Foswiki::Func::normalizeWebTopicName(undef, $this->param('displayTopic'));
   my $msec = $this->param('displaySection');
-  my ($meta, $text) = Foswiki::Func::readTopic($mweb, $mtopic);
+  unless(exists $this->{displayTopicCache}->{$mweb}->{$mtopic}) {
+      $this->{displayTopicCache}->{$mweb}->{$mtopic} = [Foswiki::Func::readTopic($mweb, $mtopic)];
+  }
+  my ($meta, $text) = @{$this->{displayTopicCache}->{$mweb}->{$mtopic}};
   return @values unless $meta && $meta->haveAccess('VIEW');
 
   $session->{prefs}->pushTopicContext($mweb, $mtopic);

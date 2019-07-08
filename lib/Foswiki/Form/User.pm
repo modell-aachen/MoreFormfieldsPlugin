@@ -73,6 +73,20 @@ sub _options_raw {
   )];
 }
 
+sub renderForDisplay {
+  my ($this, $format, $value, $attrs) = @_;
+
+  if($attrs->{addUserIcon} && $Foswiki::cfg{Plugins}{EmployeesAppPlugin}{Enabled} && Foswiki::Plugins::DefaultPreferencesPlugin::getSitePreferencesValue('EMPLOYEESAPP_USERICON')){
+    require Foswiki::Plugins::EmployeesAppPlugin;
+    my $session = $Foswiki::Plugins::SESSION;
+    my $meta = $attrs->{meta};
+    my $renderedUserValue = Foswiki::Plugins::EmployeesAppPlugin::renderUserWithIcon($session, $attrs->{origValue}, $meta->topic, $meta->web);
+    $format =~ s/\$value/$renderedUserValue/g;
+  }
+
+  return $this->SUPER::renderForDisplay($format, $value, $attrs);
+}
+
 sub solrIndexFieldHandler {
     my ( $this, $doc, $value, $mapped) = @_;
     my $d_value = $this->getDisplayValue($value);
